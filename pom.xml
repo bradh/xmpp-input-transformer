@@ -177,7 +177,47 @@
 					<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                     <Embed-Dependency>smack,smackx,clavin,rome,jwnl,opennlp-maxent,opennlp-tools,xercesImpl,lucene-analyzers-common,lucene-core,lucene-queryparser, lucene-queries, lucene-sandbox,jakarta-regexp</Embed-Dependency>
                     <Embed-Transitive>true</Embed-Transitive>
-					
+						<Import-Package>
+						com.vividsolutions.jts.geom,
+						com.vividsolutions.jts.io,
+						ddf.catalog,
+						ddf.catalog.data,
+						ddf.catalog.federation,
+						ddf.catalog.operation,
+						ddf.catalog.source,
+						ddf.catalog.transform,
+						javax.management,
+						javax.naming.directory,
+						javax.net,
+						javax.net.ssl,
+						javax.security.auth.callback,
+						javax.security.sasl,
+						javax.swing,
+						javax.xml.parsers,
+						javax.xml.transform,
+						javax.xml.transform.dom,
+						javax.xml.transform.sax,
+						javax.xml.transform.stream,
+						org.apache.commons.io,
+						org.apache.commons.lang,
+						org.apache.log4j,
+						org.geotools.filter,
+						org.jdom,
+						org.jdom.input,
+						org.jdom.output,
+						org.opengis.filter,
+						org.opengis.filter.expression,
+						org.osgi.framework,
+						org.osgi.service.blueprint,
+						org.w3c.dom ,
+						org.w3c.dom.events,
+						org.w3c.dom.ranges,
+						org.w3c.dom.traversal,
+						org.xml.sax ,
+						org.xml.sax.ext ,
+						org.xml.sax.helpers ,
+                        !sun.io.*
+                        </Import-Package>
 				</instructions>
 
 			</configuration>
