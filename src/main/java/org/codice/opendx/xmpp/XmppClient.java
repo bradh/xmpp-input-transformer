@@ -20,21 +20,49 @@ import com.berico.clavin.GeoParser;
 import ddf.catalog.CatalogFramework;
 
 
-public class XmppClient {
+public class XmppClient implements IXmppClient {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8441276665745228719L;
 	private CatalogFramework catalog;
 	private String login;
 	private String password;
 	private String nickname;
 	private String server;
-	private int port;
+	private String port;
 	private String room;
-	private Boolean sASLAuthenticationEnabled;
+	private String sASLAuthenticationEnabled;
 	
 	
 	
-	public void setsASLAuthenticationEnabled(Boolean sASLAuthenticationEnabled) {
+	public void setsASLAuthenticationEnabled(String sASLAuthenticationEnabled) {
 		this.sASLAuthenticationEnabled = sASLAuthenticationEnabled;
+	}
+	public CatalogFramework getCatalog() {
+		return catalog;
+	}
+	public String getLogin() {
+		return login;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public String getNickname() {
+		return nickname;
+	}
+	public String getServer() {
+		return server;
+	}
+	public String getPort() {
+		return port;
+	}
+	public String getRoom() {
+		return room;
+	}
+	public String getsASLAuthenticationEnabled() {
+		return sASLAuthenticationEnabled;
 	}
 	private XmppChatMgr xcm;
 	
@@ -50,7 +78,7 @@ public class XmppClient {
 	public void setServer(String server) {
 		this.server = server;
 	}
-	public void setPort(int port) {
+	public void setPort(String port) {
 		this.port = port;
 	}
 	public void setRoom(String room) {

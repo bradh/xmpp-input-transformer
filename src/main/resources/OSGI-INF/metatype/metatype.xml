@@ -8,7 +8,7 @@
          <AD name="Login" id="login" required="true" type="String" default="test" description="XMPP Login"/>
          <AD name="Password" id="password" required="true" type="String" default="$123qwe!" description="XMPP Password"/>
          <AD name="Server" id="server" required="true" type="String" default="localhost.localdomain" description="Fully Qualified Server Name"/>
-         <AD name="Port" id="port" required="true" type="Integer" default="5222" description="Server Port"/>
+         <AD name="Port" id="port" required="true" type="String" default="5222" description="Server Port"/>
          <AD name="Room" id="room" required="true" type="String" default="Test@conference.localhost.localdomain" description="Room"/>
          <AD name="Nickname" id="nickname" required="true" type="String" default="TestUser" description="XMPP Nickname"/>
          <AD name="SASLAuthenticationEnabled" id="sASLAuthenticationEnabled" required="false" type="Boolean" default="true" description="SASLAuthenticationEnabled"/>        

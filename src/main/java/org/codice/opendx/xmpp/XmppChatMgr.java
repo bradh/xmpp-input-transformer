@@ -43,17 +43,17 @@ public class XmppChatMgr {
     
  
     
-    public XmppChatMgr(String server,int port,String room, String username, String password, Boolean sASLAuthenticationEnabled) throws XMPPException {
+    public XmppChatMgr(String server,String port,String room, String username, String password, String sASLAuthenticationEnabled) throws XMPPException {
     	System.out.println(String.format("Initializing connection to server %1$s port %2$d", server, port));
 
         int packetReplyTimeout = 500;
 		SmackConfiguration.setPacketReplyTimeout(packetReplyTimeout);
         
-		
-		
-        config = new ConnectionConfiguration(server, port);
-        config.setSASLAuthenticationEnabled(sASLAuthenticationEnabled);
-        if (sASLAuthenticationEnabled){
+		int portNum = Integer.parseInt(port);
+		Boolean sasl = Boolean.parseBoolean(sASLAuthenticationEnabled);
+        config = new ConnectionConfiguration(server, portNum);
+        config.setSASLAuthenticationEnabled(sasl);
+        if (sasl){
         	config.setSecurityMode(SecurityMode.enabled);
         }else{
         	config.setSecurityMode(SecurityMode.disabled);
