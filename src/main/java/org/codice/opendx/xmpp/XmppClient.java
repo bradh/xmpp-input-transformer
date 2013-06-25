@@ -64,13 +64,14 @@ public class XmppClient {
 	
 	
 	 public void init() throws IOException, XMPPException, ParseException{
-		    log.info("Starting RSSInputStreamAdapter");
+		    log.info("Starting XmppClient");
 		    xcm = new XmppChatMgr(server, port, room, login, password, sASLAuthenticationEnabled);
-		    xcm.join(nickname);
+		    
 		    XmppMessageListener listener = new XmppMessageListener();
 		    listener.setCatalog(catalog);
-		    listener.setGeoParser(new GeoParser("/data/IndexDirectory"));
+		    listener.setGeoParser(new GeoParser("/opt/CLAVIN/IndexDirectory"));
 		    xcm.addMessageListener(listener);
+		    xcm.join(nickname,500);
 		  }
 
 	 public void destroy() throws IOException {

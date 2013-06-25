@@ -53,8 +53,11 @@ public class XmppChatMgr {
 		
         config = new ConnectionConfiguration(server, port);
         config.setSASLAuthenticationEnabled(sASLAuthenticationEnabled);
-        config.setSecurityMode(SecurityMode.enabled);
-       
+        if (sASLAuthenticationEnabled){
+        	config.setSecurityMode(SecurityMode.enabled);
+        }else{
+        	config.setSecurityMode(SecurityMode.disabled);
+        }
         
         connection = new XMPPConnection(config);
         connection.connect();
