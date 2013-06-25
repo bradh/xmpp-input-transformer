@@ -75,7 +75,7 @@ public class XmppClient {
 		  }
 
 	 public void destroy() throws IOException {
-		    log.info("Stopping RSSInputStreamAdapter");
+		    log.info("Stopping XmppClient");
 		    xcm.disconnect();
 		  }
 
