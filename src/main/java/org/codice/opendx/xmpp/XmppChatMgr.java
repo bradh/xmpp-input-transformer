@@ -12,6 +12,7 @@
 
 package org.codice.opendx.xmpp;
 
+import org.apache.log4j.Logger;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.PacketCollector;
 import org.jivesoftware.smack.PacketListener;
@@ -44,8 +45,8 @@ public class XmppChatMgr {
  
     
     public XmppChatMgr(String server,String port,String room, String username, String password, String sASLAuthenticationEnabled) throws XMPPException {
-    	System.out.println(String.format("Initializing connection to server %1$s port %2$d", server, port));
-
+    	
+    	final Logger logger = Logger.getLogger(XmppChatMgr.class);
         int packetReplyTimeout = 500;
 		SmackConfiguration.setPacketReplyTimeout(packetReplyTimeout);
         
@@ -60,9 +61,10 @@ public class XmppChatMgr {
         }
         
         connection = new XMPPConnection(config);
+        logger.info("Starting Connection");
         connection.connect();
         connection.login(username, password);
-        System.out.println("Connected: " + connection.isConnected());
+        
         this.room = room;
         // Create a collector for all incoming messages.
         messageFilter = new AndFilter(new FromContainsFilter(room), new PacketTypeFilter(Message.class));

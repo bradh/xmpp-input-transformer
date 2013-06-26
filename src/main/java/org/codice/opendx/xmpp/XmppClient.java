@@ -15,7 +15,6 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.jivesoftware.smack.XMPPException;
-
 import com.berico.clavin.GeoParser;
 import ddf.catalog.CatalogFramework;
 
@@ -86,6 +85,7 @@ public class XmppClient implements IXmppClient {
 	}
 	
 	public void setCatalog(CatalogFramework catalog) {
+	
 		this.catalog = catalog;
 	}
 	static final Logger log = Logger.getLogger(XmppClient.class);
@@ -93,6 +93,7 @@ public class XmppClient implements IXmppClient {
 	
 	 public void init() throws IOException, XMPPException, ParseException{
 		    log.info("Starting XmppClient");
+		    log.info("The port is "+port);
 		    xcm = new XmppChatMgr(server, port, room, login, password, sASLAuthenticationEnabled);
 		    
 		    XmppMessageListener listener = new XmppMessageListener();
@@ -106,5 +107,7 @@ public class XmppClient implements IXmppClient {
 		    log.info("Stopping XmppClient");
 		    xcm.disconnect();
 		  }
-
+	 
 }
+
+

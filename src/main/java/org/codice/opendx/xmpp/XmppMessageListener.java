@@ -50,7 +50,8 @@ public class XmppMessageListener implements PacketListener {
         public void processPacket(Packet packet) {
             Message message = (Message) packet;
             if(message.getBody()!=null && message.getBody()!="" && message.getFrom()!=null && message.getFrom()!=""){
-            	XmppInputTransformer xit = new XmppInputTransformer(geoParser, catalog);
+            	XmppInputTransformer xit = new XmppInputTransformer(catalog);
+            	xit.setGeoParser(geoParser);
             	try {
 					Metacard metacard = xit.transform(message);
 					if(metacard!=null){

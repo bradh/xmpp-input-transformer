@@ -51,11 +51,21 @@ public class XmppInputTransformer {
 	  public static final SimpleDateFormat ISO_8601_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
 	  private GeoParser geoParser;
-	  private CatalogFramework catalog;
+	  public GeoParser getGeoParser() {
+		return geoParser;
+	}
+
+
+	public void setGeoParser(GeoParser geoParser) {
+		this.geoParser = geoParser;
+	}
+
+
+	private CatalogFramework catalog;
 	  private BundleContext bundleContext;
 
-	  public XmppInputTransformer(GeoParser geoParser, CatalogFramework catalogFramework){
-		    this.geoParser = geoParser;
+	  public XmppInputTransformer(CatalogFramework catalogFramework){
+		    
 		    this.catalog = catalogFramework;
 		    
 		    
