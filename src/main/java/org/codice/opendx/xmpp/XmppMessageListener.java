@@ -28,7 +28,9 @@ import ddf.catalog.source.SourceUnavailableException;
 
 
 public class XmppMessageListener implements PacketListener {
-	 	public GeoParser geoParser;
+	 	private GeoParser geoParser;
+	 	private CatalogFramework catalog;
+	 	
 	 	public GeoParser getGeoParser() {
 			return geoParser;
 		}
@@ -45,7 +47,7 @@ public class XmppMessageListener implements PacketListener {
 			this.catalog = catalog;
 		}
 
-		public CatalogFramework catalog; 
+		
 
         public void processPacket(Packet packet) {
             Message message = (Message) packet;

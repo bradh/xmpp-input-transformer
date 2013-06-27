@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.jivesoftware.smack.XMPPException;
 import com.berico.clavin.GeoParser;
+
 import ddf.catalog.CatalogFramework;
 
 
@@ -97,10 +98,12 @@ public class XmppClient implements IXmppClient {
 		    xcm = new XmppChatMgr(server, port, room, login, password, sASLAuthenticationEnabled);
 		    
 		    XmppMessageListener listener = new XmppMessageListener();
+		    log.info(catalog);
 		    listener.setCatalog(catalog);
 		    listener.setGeoParser(new GeoParser("/opt/CLAVIN/IndexDirectory"));
+		   
+		    xcm.join(nickname,3600);
 		    xcm.addMessageListener(listener);
-		    xcm.join(nickname,750);
 		  }
 
 	 public void destroy() throws IOException {
