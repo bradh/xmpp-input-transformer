@@ -13,6 +13,7 @@ package org.codice.opendx.xmpp;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -31,6 +32,7 @@ import ddf.catalog.operation.*;
 import ddf.catalog.source.SourceUnavailableException;
 import ddf.catalog.source.UnsupportedQueryException;
 import ddf.catalog.transform.CatalogTransformerException;
+import ddf.catalog.transform.InputTransformer;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -44,7 +46,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 
 
-public class XmppInputTransformer {
+public class XmppInputTransformer implements InputTransformer {
 
 	private static final Logger log = Logger.getLogger(XmppInputTransformer.class);
 	  private static final String CONTENT_TYPE = "application/xml";
@@ -62,15 +64,21 @@ public class XmppInputTransformer {
 
 
 	private CatalogFramework catalog;
-	  private BundleContext bundleContext;
+	  public CatalogFramework getCatalog() {
+		return catalog;
+	}
 
-	  public XmppInputTransformer(CatalogFramework catalogFramework){
+
+	public void setCatalog(CatalogFramework catalog) {
+		this.catalog = catalog;
+	}
+
+
+	private BundleContext bundleContext;
+
+	  public XmppInputTransformer(){
 		    
-		    this.catalog = catalogFramework;
-		    
-		    
-		    
-		    
+		   		    
 		  }
 	  
 	  static {
@@ -170,7 +178,7 @@ public class XmppInputTransformer {
 
 	    QueryRequest request = new QueryRequestImpl(query);
 
-	    QueryResponse response = this.catalog.query(request);
+	    QueryResponse response = catalog.query(request);
 	    log.info("found " + response.getResults().size() + " with " + entry.getBody().replaceAll("[^a-zA-Z0-9]+", " ") + " " + getHashCode(entry.getBody()));
 	    return !response.getResults().isEmpty();
 	  }
@@ -183,6 +191,20 @@ public class XmppInputTransformer {
 
 	public void setBundleContext(BundleContext bundleContext) {
 		this.bundleContext = bundleContext;
+	}
+
+
+	public Metacard transform(InputStream arg0) throws IOException,
+			CatalogTransformerException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	public Metacard transform(InputStream arg0, String arg1)
+			throws IOException, CatalogTransformerException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

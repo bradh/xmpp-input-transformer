@@ -100,7 +100,7 @@ public class XmppClient implements IXmppClient {
 		    listener.setCatalog(catalog);
 		    listener.setGeoParser(new GeoParser("/opt/CLAVIN/IndexDirectory"));
 		    xcm.addMessageListener(listener);
-		    xcm.join(nickname,500);
+		    xcm.join(nickname,750);
 		  }
 
 	 public void destroy() throws IOException {
