@@ -125,20 +125,29 @@ public class XmppChatMgr {
                 new FromContainsFilter(room + "/" + nickname),
                 new PacketTypeFilter(Presence.class));
         PacketCollector response = connection.createPacketCollector(responseFilter);
-        
-        int i=10;
-        while(i>0){
+        Presence presence;
+        int i=1;
+        while(i<11){
         		connection.sendPacket(joinPresence);
                 
-                Presence presence = (Presence)response.nextResult(timeout);
+                presence = (Presence)response.nextResult(timeout);
                 response.cancel();
-                if(i==0 && presence == null){
+                if(i==10 && presence == null){
                 	throw new XMPPException("No response from server.");
                 }
-                if(i==0 && presence.getError() != null){
+                if(i==10 && presence.getError() != null){
                 	 throw new XMPPException(presence.getError());
                 }
-                i=i-1;
+                if(presence!=null && presence.getError()==null){
+                	i=10;
+                }
+                try {
+					Thread.sleep(3600);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                i++;
         }
         
         this.nickname = nickname;
