@@ -126,16 +126,21 @@ public class XmppChatMgr {
                 new PacketTypeFilter(Presence.class));
         PacketCollector response = connection.createPacketCollector(responseFilter);
         
-        connection.sendPacket(joinPresence);
+        int i=10;
+        while(i>0){
+        		connection.sendPacket(joinPresence);
+                
+                Presence presence = (Presence)response.nextResult(timeout);
+                response.cancel();
+                if(i==0 && presence == null){
+                	throw new XMPPException("No response from server.");
+                }
+                if(i==0 && presence.getError() != null){
+                	 throw new XMPPException(presence.getError());
+                }
+                i=i-1;
+        }
         
-        Presence presence = (Presence)response.nextResult(timeout);
-        response.cancel();
-        if (presence == null) {
-            throw new XMPPException("No response from server.");
-        }
-        else if (presence.getError() != null) {
-            throw new XMPPException(presence.getError());
-        }
         this.nickname = nickname;
         joined = true;
     }

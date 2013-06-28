@@ -26,7 +26,7 @@ public class XmppClient implements IXmppClient {
 	 * 
 	 */
 	private static final long serialVersionUID = 8441276665745228719L;
-	private CatalogFramework catalog;
+	
 	private String login;
 	private String password;
 	private String nickname;
@@ -40,9 +40,7 @@ public class XmppClient implements IXmppClient {
 	public void setsASLAuthenticationEnabled(String sASLAuthenticationEnabled) {
 		this.sASLAuthenticationEnabled = sASLAuthenticationEnabled;
 	}
-	public CatalogFramework getCatalog() {
-		return catalog;
-	}
+	
 	public String getLogin() {
 		return login;
 	}
@@ -85,10 +83,7 @@ public class XmppClient implements IXmppClient {
 		this.room = room;
 	}
 	
-	public void setCatalog(CatalogFramework catalog) {
 	
-		this.catalog = catalog;
-	}
 	static final Logger log = Logger.getLogger(XmppClient.class);
 	
 	
@@ -98,10 +93,6 @@ public class XmppClient implements IXmppClient {
 		    xcm = new XmppChatMgr(server, port, room, login, password, sASLAuthenticationEnabled);
 		    
 		    XmppMessageListener listener = new XmppMessageListener();
-		    log.info(catalog);
-		    listener.setCatalog(catalog);
-		    listener.setGeoParser(new GeoParser("/opt/CLAVIN/IndexDirectory"));
-		   
 		    xcm.join(nickname,3600);
 		    xcm.addMessageListener(listener);
 		  }

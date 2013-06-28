@@ -28,6 +28,10 @@
         </service-properties>
     </service>
 
+
+		<bean id="listener" class="org.codice.opendx.xmpp.XmppMessageListener" >
+        	<property name="catalog" ref="ddf-fanout"/>
+    	</bean>
                 
                 
 
@@ -39,7 +43,6 @@
                 <property name="port" value="5222" />
                 <property name="room" value="Test@conference.localhost.localdoamin" />
                 <property name="sASLAuthenticationEnabled" value="false" />
-                <property name="catalog" ref="ddf-fanout"/>
         </bean>
         
         <reference id="ddf-fanout" interface="ddf.catalog.CatalogFramework"/>

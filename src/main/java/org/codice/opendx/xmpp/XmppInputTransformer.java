@@ -52,17 +52,7 @@ public class XmppInputTransformer implements InputTransformer {
 	  private static final String CONTENT_TYPE = "application/xml";
 	  public static final SimpleDateFormat ISO_8601_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
-	  private GeoParser geoParser;
-	  public GeoParser getGeoParser() {
-		return geoParser;
-	}
-
-
-	public void setGeoParser(GeoParser geoParser) {
-		this.geoParser = geoParser;
-	}
-
-
+	  
 	private CatalogFramework catalog;
 	  public CatalogFramework getCatalog() {
 		return catalog;
@@ -137,6 +127,8 @@ public class XmppInputTransformer implements InputTransformer {
 	  private List<ResolvedLocation> getResolvedLocationsForString(String string){
 	    List<ResolvedLocation> resolvedLocations = null;
 	    try {
+	    	
+	    	GeoParser geoParser = new GeoParser("/opt/CLAVIN/IndexDirectory");
 	      resolvedLocations = geoParser.parse(WordUtils.capitalize(string));
 	    } catch (Exception e) {
 	      log.error(e);

@@ -29,7 +29,6 @@ public interface IXmppClient  extends Serializable{
 	 void setServer(String server);
 	 void setPort(String port);
 	 void setRoom(String room);
-	 void setCatalog(CatalogFramework catalog);
 	 void init() throws IOException, XMPPException, ParseException;
 	 void destroy() throws IOException;
 

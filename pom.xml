@@ -159,17 +159,7 @@
 			<artifactId>smackx</artifactId>
 			<version>3.1.0</version>
 		</dependency>
-			<dependency>
-	<groupId>org.apache.felix</groupId>
-	<artifactId>org.osgi.core</artifactId>
-	<version>1.4.0</version>
-</dependency>
-				
-				<dependency>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>org.osgi.compendium</artifactId>
-				<version>1.4.0</version>
-		</dependency>
+			
     </dependencies>
 
   <build>

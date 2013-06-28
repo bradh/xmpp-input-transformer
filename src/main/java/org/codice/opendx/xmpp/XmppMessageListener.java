@@ -18,7 +18,6 @@ import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 
-import com.berico.clavin.GeoParser;
 
 import ddf.catalog.CatalogFramework;
 import ddf.catalog.data.Metacard;
@@ -28,18 +27,10 @@ import ddf.catalog.source.SourceUnavailableException;
 
 
 public class XmppMessageListener implements PacketListener {
-	 	private GeoParser geoParser;
+	 	
 	 	private CatalogFramework catalog;
 	 	
-	 	public GeoParser getGeoParser() {
-			return geoParser;
-		}
-
-		public void setGeoParser(GeoParser geoParser) {
-			this.geoParser = geoParser;
-		}
-
-		public CatalogFramework getCatalog() {
+	 	public CatalogFramework getCatalog() {
 			return catalog;
 		}
 
@@ -53,8 +44,6 @@ public class XmppMessageListener implements PacketListener {
             Message message = (Message) packet;
             if(message.getBody()!=null && message.getBody()!="" && message.getFrom()!=null && message.getFrom()!=""){
             	XmppInputTransformer xit = new XmppInputTransformer();
-            	xit.setCatalog(catalog);
-            	xit.setGeoParser(geoParser);
             	try {
 					Metacard metacard = xit.transform(message);
 					if(metacard!=null){
