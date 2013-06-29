@@ -18,7 +18,7 @@ import java.io.Serializable;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.jivesoftware.smack.XMPPException;
 
-import ddf.catalog.CatalogFramework;
+
 
 public interface IXmppClient  extends Serializable{
 	
@@ -29,7 +29,7 @@ public interface IXmppClient  extends Serializable{
 	 void setServer(String server);
 	 void setPort(String port);
 	 void setRoom(String room);
-	 void init() throws IOException, XMPPException, ParseException;
+	 void init() throws IOException, XMPPException, ParseException, InterruptedException;
 	 void destroy() throws IOException;
 
 }

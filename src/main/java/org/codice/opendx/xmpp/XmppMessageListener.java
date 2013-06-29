@@ -14,6 +14,7 @@ package org.codice.opendx.xmpp;
 
 
 
+import org.apache.log4j.Logger;
 import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
@@ -38,12 +39,17 @@ public class XmppMessageListener implements PacketListener {
 			this.catalog = catalog;
 		}
 
+		static final Logger logger = Logger.getLogger(XmppMessageListener.class);
 		
 
         public void processPacket(Packet packet) {
+        	logger.info("Start logging Packets");
+        	logger.info(packet);
+        	
             Message message = (Message) packet;
             if(message.getBody()!=null && message.getBody()!="" && message.getFrom()!=null && message.getFrom()!=""){
             	XmppInputTransformer xit = new XmppInputTransformer();
+            	xit.setCatalog(catalog);
             	try {
 					Metacard metacard = xit.transform(message);
 					if(metacard!=null){

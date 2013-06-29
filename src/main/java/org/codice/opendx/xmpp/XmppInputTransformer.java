@@ -85,11 +85,23 @@ public class XmppInputTransformer implements InputTransformer {
 	    if (message == null) {
 	      throw new CatalogTransformerException("Cannot transform null input.");
 	    }
-
+	    log.info(message.getBody());
 	   
 	      Message newEntry = new Message();
 	      if(!isEntryInCatalog(message)){
-	    	  newEntry = message;
+	    	  newEntry.setBody(message.getBody());
+	    	  newEntry.setFrom(message.getFrom());
+	    	  newEntry.setPacketID(message.getPacketID());
+	    	  if(message.getSubject()!=null && message.getSubject()!=""){
+	    	  newEntry.setSubject(message.getSubject());
+	    	  }
+	    	  else
+	    	  {
+	    		  newEntry.setSubject(StringEscapeUtils.escapeXml(message.getBody()));
+	    	  }
+	    	  newEntry.setThread(message.getThread());
+	    	  newEntry.setTo(message.getTo());
+	    	  newEntry.setType(message.getType());
 	      }
 	      else{
 	    	  newEntry = null;
@@ -97,7 +109,7 @@ public class XmppInputTransformer implements InputTransformer {
 	      
 
 	      MetacardImpl metacard = new MetacardImpl();
-	      metacard.setTitle(newEntry.getBody().replaceAll("[^a-zA-Z0-9]+", " "));
+	      metacard.setTitle(newEntry.getSubject());
 
 	      metacard.setContentTypeName(CONTENT_TYPE);
 	      
@@ -113,10 +125,10 @@ public class XmppInputTransformer implements InputTransformer {
 	        metacard.setLocation(WKTWriter.toPoint(new Coordinate(locations.get(0).geoname.longitude, locations.get(0).geoname.latitude)));
 
 	      metacard.setMetadata("<?xml version=\"1.0\"?>\n<metadata>\n" +
-	              "<title>\n" + newEntry.getSubject().replaceAll("[^a-zA-Z0-9]+", " ") + "\n</title>\n" +
+	              "<title>\n" + newEntry.getSubject() + "\n</title>\n" +
 	              "<description>\n" + StringEscapeUtils.escapeXml(newEntry.getBody()) + "\n</description>\n" +
 	              "<hashcode>" +getHashCode(newEntry.getBody()) + "</hashcode>\n" +
-	              "\n</metadata>");
+	              "</metadata>");
 	      log.info("Metacard " + metacard.getTitle() + "(" + metacard.getId() + ")" + " created");
 	      log.info("Metacard " + metacard.getMetadata() );
 	      return metacard;
@@ -169,10 +181,15 @@ public class XmppInputTransformer implements InputTransformer {
 	    Query query = new QueryImpl(filter);
 
 	    QueryRequest request = new QueryRequestImpl(query);
-
+	    if(catalog==null){
+	    	log.info("Catalog is null");
+	    	
+	    }
 	    QueryResponse response = catalog.query(request);
 	    log.info("found " + response.getResults().size() + " with " + entry.getBody().replaceAll("[^a-zA-Z0-9]+", " ") + " " + getHashCode(entry.getBody()));
 	    return !response.getResults().isEmpty();
+	    
+	    
 	  }
 
 
