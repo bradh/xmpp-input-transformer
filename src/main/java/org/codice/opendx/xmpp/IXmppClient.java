@@ -12,24 +12,22 @@
 
 package org.codice.opendx.xmpp;
 
-import java.io.IOException;
 import java.io.Serializable;
 
-import org.apache.lucene.queryparser.classic.ParseException;
-import org.jivesoftware.smack.XMPPException;
 
 
 
 public interface IXmppClient  extends Serializable{
 	
-	 void setsASLAuthenticationEnabled(String sASLAuthenticationEnabled);
-	 void setLogin(String login);
-	 void setPassword(String password);
-	 void setNickname(String nickname);
-	 void setServer(String server);
-	 void setPort(String port);
-	 void setRoom(String room);
-	 void init() throws IOException, XMPPException, ParseException, InterruptedException;
-	 void destroy() throws IOException;
-
+	
+	 String getLogin();
+	 String getPassword();
+	 String getNickname();
+	 String getServer();
+	 String getPort();
+	 String getRoom();
+	 String getsASLAuthenticationEnabled();
+	 
+	 
+	 
 }

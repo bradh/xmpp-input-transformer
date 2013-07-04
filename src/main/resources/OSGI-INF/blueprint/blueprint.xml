@@ -1,50 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
-        xsi:schemaLocation="
-                http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
-                http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://svn.apache.org/repos/asf/aries/trunk/blueprint/blueprint-cm/src/main/resources/org/apache/aries/blueprint/compendium/cm/blueprint-cm-1.1.0.xsd
-        ">
-
-        <cm:property-placeholder persistent-id="org.codice.opendx.xmpp.XmppClient"
-                update-strategy="reload"/>
-                
-        
-
-    	<bean id="transformer" class="org.codice.opendx.xmpp.XmppInputTransformer" >
-        	<property name="catalog" ref="ddf-fanout"/>
-    	</bean>
-
-    <service ref="transformer" interface="ddf.catalog.transform.InputTransformer">
-        <service-properties>
-            <entry key="id" value="xmpp" />
-            <!-- List of mime type this XmppInputTransformer supports -->
-            <entry key="mime-type">
-                <list>
-                    <value>application/xml</value>
-                </list>
-            </entry>
-        </service-properties>
-    </service>
+	xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://svn.apache.org/repos/asf/aries/trunk/blueprint/blueprint-cm/src/main/resources/org/apache/aries/blueprint/compendium/cm/blueprint-cm-1.1.0.xsd"
+	default-activation="eager">
 
 
-		<bean id="listener" class="org.codice.opendx.xmpp.XmppMessageListener" >
-        	<property name="catalog" ref="ddf-fanout"/>
-    	</bean>
-                
-                
+	<cm:managed-service-factory
+		id="org.codice.opendx.xmpp.XmppClientServiceFactory"
+		factory-pid="org.codice.opendx.xmpp.XmppClientFactory"
+		interface="org.codice.opendx.xmpp.IXmppClient"
+		auto-export="all-classes">
+		<cm:managed-component class="org.codice.opendx.xmpp.XmppClient"
+			init-method="init" destroy-method="destroy">
 
-        <bean id="XmppClient" class="org.codice.opendx.xmpp.XmppClient" init-method="init" destroy-method="destroy">
-                <property name="login" value="test" />
-                <property name="password" value="$123qwe!" />
-                <property name="nickname" value="TestUser" />
-                <property name="server" value="localhost.localdomain" />
-                <property name="port" value="5222" />
-                <property name="room" value="Test@conference.localhost.localdomain" />
-                <property name="sASLAuthenticationEnabled" value="false" />
-                <property name="catalog" ref="ddf-fanout"/>
-        </bean>
-        
-        <reference id="ddf-fanout" interface="ddf.catalog.CatalogFramework"/>
+			<property name="catalog" ref="opendx-fanout" />
+		</cm:managed-component>
+	</cm:managed-service-factory>
+	<reference id="opendx-fanout" interface="ddf.catalog.CatalogFramework"/>
 </blueprint>

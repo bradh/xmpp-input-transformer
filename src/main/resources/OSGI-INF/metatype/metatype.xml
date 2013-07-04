@@ -4,17 +4,17 @@
      xsi:schemaLocation="
          http://www.osgi.org/xmlns/metatype/v1.1.0 http://www.osgi.org/xmlns/metatype/v1.1.0/metatype.xsd
      ">
-     <OCD description="XMPP Input Transform configuration" name="XMPP Input Transform" id="org.codice.opendx.xmpp.XmppClient">
-         <AD name="Login" id="login" required="true" type="String" default="test" description="XMPP Login"/>
+     <OCD description="XMPP Input Transform configuration" name="XMPPClient" id="org.codice.opendx.xmpp.xmppclient">
+         <AD name="Login" id="login" required="true" type="String" default="test2" description="XMPP Login"/>
          <AD name="Password" id="password" required="true" type="String" default="$123qwe!" description="XMPP Password"/>
          <AD name="Server" id="server" required="true" type="String" default="localhost.localdomain" description="Fully Qualified Server Name"/>
          <AD name="Port" id="port" required="true" type="String" default="5222" description="Server Port"/>
          <AD name="Room" id="room" required="true" type="String" default="Test@conference.localhost.localdomain" description="Room"/>
-         <AD name="Nickname" id="nickname" required="true" type="String" default="TestUser" description="XMPP Nickname"/>
+         <AD name="Nickname" id="nickname" required="true" type="String" default="TestUser2" description="XMPP Nickname"/>
          <AD name="SASLAuthenticationEnabled" id="sASLAuthenticationEnabled" required="false" type="Boolean" default="true" description="SASLAuthenticationEnabled"/>        
      </OCD>
-     <Designate pid="org.codice.opendx.xmpp.XmppClient" bundle="*"
-     	factoryPid="org.codice.opendx.xmpp.XmppClient">
-     	<Object ocdref="org.codice.opendx.xmpp.XmppClient" />
+     <Designate pid="org.codice.opendx.xmpp.xmppclient" bundle="*"
+        factoryPid="org.codice.opendx.xmpp.xmppclient">
+        <Object ocdref="org.codice.opendx.xmpp.xmppclient" />
      </Designate>
 </MetaData>

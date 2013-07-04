@@ -49,7 +49,7 @@ import org.osgi.framework.FrameworkUtil;
 public class XmppInputTransformer implements InputTransformer {
 
 	private static final Logger log = Logger.getLogger(XmppInputTransformer.class);
-	  private static final String CONTENT_TYPE = "application/xml";
+	  private static final String CONTENT_TYPE = "text/xml";
 	  public static final SimpleDateFormat ISO_8601_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
 	  
