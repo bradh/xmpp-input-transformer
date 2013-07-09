@@ -5,17 +5,18 @@
 	xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://svn.apache.org/repos/asf/aries/trunk/blueprint/blueprint-cm/src/main/resources/org/apache/aries/blueprint/compendium/cm/blueprint-cm-1.1.0.xsd"
 	default-activation="eager">
 
-
-	<cm:managed-service-factory
-		id="org.codice.opendx.xmpp.XmppClientServiceFactory"
-		factory-pid="org.codice.opendx.xmpp.XmppClientFactory"
-		interface="org.codice.opendx.xmpp.IXmppClient"
-		auto-export="all-classes">
-		<cm:managed-component class="org.codice.opendx.xmpp.XmppClient"
-			init-method="init" destroy-method="destroy">
-
-			<property name="catalog" ref="opendx-fanout" />
-		</cm:managed-component>
-	</cm:managed-service-factory>
+	<bean id="Xmpp" class="org.codice.opendx.xmpp.Xmpp"
+		init-method="init" depends-on="IXmppClient">
+		<property name="catalog" ref="opendx-fanout" />
+	</bean>
+	
 	<reference id="opendx-fanout" interface="ddf.catalog.CatalogFramework"/>
+	<reference-list
+		id="IXmppClient" interface="org.codice.opendx.xmpp.IXmppClient"
+		member-type="service-reference" activation="lazy">
+		<reference-listener 
+              bind-method="bind" unbind-method="unbind">
+          <bean class="org.codice.opendx.xmpp.Xmpp"/>        
+      </reference-listener>
+</reference-list>
 </blueprint>

@@ -1,6 +1,7 @@
 package org.codice.opendx.xmpp;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 import org.apache.lucene.queryparser.classic.ParseException;
@@ -11,37 +12,50 @@ import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
 import org.jivesoftware.smackx.muc.DiscussionHistory;
 import org.jivesoftware.smackx.muc.MultiUserChat;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
+import org.osgi.framework.ServiceRegistration;
 import org.codice.opendx.xmpp.IXmppClient;
 import ddf.catalog.CatalogFramework;
 
 public class Xmpp implements IXmpp {
 
 	static final Logger log = Logger.getLogger(Xmpp.class);
-	private XMPPConnection connection;
-	private ConnectionConfiguration config;
+	
 	private CatalogFramework catalog;
-	private String login;
-	private String password;
-	private String nickname;
-	private String server;
-	private String port;
-	private String room;
-	private String sASLAuthenticationEnabled;
+	private ArrayList<XMPPConnection> connections = new ArrayList<XMPPConnection>();
 	
 	public void setCatalog(CatalogFramework catalog) {
 		this.catalog = catalog;
 	}
-	private IXmppClient service;
+	
 
-	 public void init() throws IOException, XMPPException, ParseException, InterruptedException{
+	public void init() throws IOException, XMPPException, ParseException, InterruptedException, InvalidSyntaxException{
 		    
-		 	login = service.getLogin();
-		 	password = service.getPassword();
-		 	nickname = service.getNickname();
-		 	port = service.getPort();
-		 	room = service.getRoom();
-		 	server = service.getServer();
-		 	sASLAuthenticationEnabled = service.getsASLAuthenticationEnabled();
+		 	
+		 	
+		  }
+
+	 public void destroy() throws IOException {
+		    log.info("Stopping XmppClient");
+		    for(XMPPConnection connection : connections){
+		    connection.disconnect();
+		  }
+	 }
+	 
+	 
+	 
+	 public void bind(ServiceReference service) throws XMPPException, InterruptedException{
+		 log.info("Found Service "+ service);
+		 	String login = (String)service.getProperty("login");
+		 	String password = (String)service.getProperty("password");
+		 	String nickname = (String)service.getProperty("nickname");
+		 	String port = (String)service.getProperty("port");
+		 	String room = (String)service.getProperty("room");
+		 	String server = (String)service.getProperty("server");
+		 	String sASLAuthenticationEnabled = (String)service.getProperty("sASLAuthenticationEnabled").toString();
 		 	
 		    log.info("Starting XmppClient");
 		    log.info("The port is "+port);
@@ -52,7 +66,7 @@ public class Xmpp implements IXmpp {
 	        
 			int portNum = Integer.parseInt(port);
 			Boolean sasl = Boolean.parseBoolean(sASLAuthenticationEnabled);
-	        config = new ConnectionConfiguration(server, portNum);
+			ConnectionConfiguration config = new ConnectionConfiguration(server, portNum);
 	        config.setSASLAuthenticationEnabled(sasl);
 	        if (sasl){
 	        	config.setSecurityMode(SecurityMode.enabled);
@@ -60,7 +74,11 @@ public class Xmpp implements IXmpp {
 	        	config.setSecurityMode(SecurityMode.disabled);
 	        }
 	        
-	        connection = new XMPPConnection(config);
+	        XMPPConnection connection = new XMPPConnection(config);
+	        if(!connections.contains(connection)){
+	        
+	        	connections.add(connection);
+	        
 	        log.info("Starting Connection");
 	        connection.connect();
 	        Thread.sleep(3600);
@@ -88,18 +106,16 @@ public class Xmpp implements IXmpp {
 				}
 	        }
 	        XmppMessageListener listener = new XmppMessageListener();
-	        listener.setCatalog(catalog);
+	        listener.setCatalog(this.catalog);
 	        muc.addMessageListener(listener);
 		    
 	        }
-		    
-		    
-		  }
-
-	 public void destroy() throws IOException {
-		    log.info("Stopping XmppClient");
-		    connection.disconnect();
-		  }
-	
+		 	}
+	 }
+	 
+	 public void unbind(ServiceReference service){
+		 
+	 }
+	 
 	
 }

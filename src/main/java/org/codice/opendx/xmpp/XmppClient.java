@@ -11,13 +11,42 @@
  **/
 package org.codice.opendx.xmpp;
 
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.log4j.Logger;
-import org.osgi.service.component.ComponentContext;
 
-@Component
+import java.util.Map;
+
+import aQute.bnd.annotation.component.Activate;
+import aQute.bnd.annotation.component.Component;
+import aQute.bnd.annotation.component.ConfigurationPolicy;
+import aQute.bnd.annotation.component.Deactivate;
+import aQute.bnd.annotation.metatype.Configurable;
+import aQute.bnd.annotation.metatype.Meta;
+import org.apache.log4j.Logger;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
+
+@Component(name = "org.codice.opendx.xmpp.xmppclient",
+designate = XmppClient.Config.class,
+configurationPolicy = ConfigurationPolicy.require)
 public class XmppClient implements IXmppClient {
 	
+	interface Config {
+		@Meta.AD(required = true, deflt = "test2")
+		 String login();
+		@Meta.AD(required = true, deflt = "$123qwe!")
+		 String password();
+		@Meta.AD(required = true, deflt = "TestUser2")
+		 String nickname();
+		@Meta.AD(required = true, deflt = "localhost.localdomain")
+		 String server();
+		@Meta.AD(required = true, deflt = "5222")
+		 String port();
+		@Meta.AD(required = true, deflt = "Test@conference.localhost.localdomain")
+		 String room();
+		@Meta.AD(required = true, deflt = "false")
+		 String sASLAuthenticationEnabled();
+	}
 	/**
 	 * 
 	 */
@@ -26,41 +55,43 @@ public class XmppClient implements IXmppClient {
 
 	static final Logger log = Logger.getLogger(XmppClient.class);
 	
-		 
-	 private ComponentContext cc;
-
-	    protected void activate(ComponentContext cc) {
-	        this.cc = cc;
+		 private Config config;
+	 
+	    @Activate
+	    protected void activate(Map<String, Object> configProps) throws InvalidSyntaxException {
+	    	config = Configurable.createConfigurable(Config.class, configProps);
+	    	
+		 	
 	        
 	    }
-
-	    protected void deactivate(ComponentContext cc) {
+	    @Deactivate
+	    protected void deactivate(Map<String, Object> configProps) {
+	        config = null;
 	        
-	        this.cc = null;
 	    }
 
 	   
 	   
-	    public String getLogin() {
-			return (String)this.cc.getProperties().get("login");
+	    public String login() {
+			return config.login();
 		}
-		public String getPassword() {
-			return (String)this.cc.getProperties().get("password");
+		public String password() {
+			return config.password();
 		}
-		public String getNickname() {
-			return (String)this.cc.getProperties().get("nickname");
+		public String nickname() {
+			return config.nickname();
 		}
-		public String getServer() {
-			return (String)this.cc.getProperties().get("server");
+		public String server() {
+			return config.server();
 		}
-		public String getPort() {
-			return (String)this.cc.getProperties().get("port");
+		public String port() {
+			return config.port();
 		}
-		public String getRoom() {
-			return (String)this.cc.getProperties().get("room");
+		public String room() {
+			return config.room();
 		}
-		public String getsASLAuthenticationEnabled() {
-			return (String)this.cc.getProperties().get("sASLAuthenticationEnabled");
+		public String sASLAuthenticationEnabled() {
+			return config.sASLAuthenticationEnabled();
 		}
 		
 	

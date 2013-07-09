@@ -13,20 +13,26 @@
 package org.codice.opendx.xmpp;
 
 import java.io.Serializable;
-
+import aQute.bnd.annotation.metatype.Meta;
 
 
 
 public interface IXmppClient  extends Serializable{
 	
-	
-	 String getLogin();
-	 String getPassword();
-	 String getNickname();
-	 String getServer();
-	 String getPort();
-	 String getRoom();
-	 String getsASLAuthenticationEnabled();
+	@Meta.AD(required = true, deflt = "test2")
+	 String login();
+	@Meta.AD(required = true, deflt = "$123qwe!")
+	 String password();
+	@Meta.AD(required = true, deflt = "TestUser2")
+	 String nickname();
+	@Meta.AD(required = true, deflt = "localhost.localdomain")
+	 String server();
+	@Meta.AD(required = true, deflt = "5222")
+	 String port();
+	@Meta.AD(required = true, deflt = "Test@conference.localhost.localdomain")
+	 String room();
+	@Meta.AD(required = true, deflt = "false")
+	 String sASLAuthenticationEnabled();
 	 
 	 
 	 
