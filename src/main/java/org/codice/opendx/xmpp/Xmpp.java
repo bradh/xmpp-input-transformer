@@ -77,8 +77,7 @@ public class Xmpp implements IXmpp {
 	        XMPPConnection connection = new XMPPConnection(config);
 	        if(!connections.contains(connection)){
 	        
-	        	connections.add(connection);
-	        
+	        	
 	        log.info("Starting Connection");
 	        connection.connect();
 	        Thread.sleep(3600);
@@ -108,12 +107,26 @@ public class Xmpp implements IXmpp {
 	        XmppMessageListener listener = new XmppMessageListener();
 	        listener.setCatalog(this.catalog);
 	        muc.addMessageListener(listener);
-		    
+	        
+	        
 	        }
+	        connections.add(connection);
 		 	}
 	 }
 	 
 	 public void unbind(ServiceReference service){
+		 String login = (String)service.getProperty("login");
+		 
+		for(XMPPConnection connection : connections){
+			
+			if(connection.getUser()==login){
+				connection.disconnect();
+			}
+			
+		}
+	        
+	        
+		 
 		 
 	 }
 	 
