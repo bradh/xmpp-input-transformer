@@ -11,6 +11,7 @@ import ddf.catalog.CatalogFramework;
 
 public interface IXmpp {
 	
+	void setpDirectory(String pDirectory);
 	void setCatalog(CatalogFramework catalog);
 	void init() throws IOException, XMPPException, ParseException, InterruptedException, InvalidSyntaxException;
 	void destroy() throws IOException;

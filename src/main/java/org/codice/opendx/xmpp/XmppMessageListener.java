@@ -14,10 +14,16 @@ package org.codice.opendx.xmpp;
 
 
 
+import java.io.IOException;
+
 import org.apache.log4j.Logger;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
+
+import com.berico.clavin.GeoParser;
+import com.berico.clavin.GeoParserFactory;
 
 
 import ddf.catalog.CatalogFramework;
@@ -30,8 +36,17 @@ import ddf.catalog.source.SourceUnavailableException;
 public class XmppMessageListener implements PacketListener {
 	 	
 	 	private CatalogFramework catalog;
-	 	
-	 	public CatalogFramework getCatalog() {
+		private String pDirectory;
+
+	 	public String getpDirectory() {
+			return pDirectory;
+		}
+
+		public void setpDirectory(String pDirectory) {
+			this.pDirectory = pDirectory;
+		}
+
+		public CatalogFramework getCatalog() {
 			return catalog;
 		}
 
@@ -49,7 +64,19 @@ public class XmppMessageListener implements PacketListener {
             Message message = (Message) packet;
             if(message.getBody()!=null && message.getBody()!="" && message.getFrom()!=null && message.getFrom()!=""){
             	XmppInputTransformer xit = new XmppInputTransformer();
+            	GeoParser geoParser = null;
+            	try {
+            		geoParser = GeoParserFactory.getDefault(this.pDirectory);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					logger.info(e1);
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					logger.info(e1);
+				}
             	xit.setCatalog(catalog);
+            	xit.setGeoParser(geoParser);
+            	
             	try {
 					Metacard metacard = xit.transform(message);
 					if(metacard!=null){
@@ -57,7 +84,7 @@ public class XmppMessageListener implements PacketListener {
 					}
 				} catch (Exception e) {
 					
-					e.printStackTrace();
+					logger.info(e);
 				}
             }
 

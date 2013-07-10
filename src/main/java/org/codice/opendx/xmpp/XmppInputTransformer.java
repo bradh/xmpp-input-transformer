@@ -38,6 +38,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.geotools.filter.FilterFactoryImpl;
 import org.jivesoftware.smack.packet.Message;
 import org.opengis.filter.Filter;
@@ -52,10 +53,21 @@ public class XmppInputTransformer implements InputTransformer {
 	  private static final String CONTENT_TYPE = "text/xml";
 	  public static final SimpleDateFormat ISO_8601_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
-	  
+	
+
 	private CatalogFramework catalog;
 	  public CatalogFramework getCatalog() {
 		return catalog;
+	}
+
+
+	public GeoParser getGeoParser() {
+		return geoParser;
+	}
+
+
+	public void setGeoParser(GeoParser geoParser) {
+		this.geoParser = geoParser;
 	}
 
 
@@ -63,6 +75,8 @@ public class XmppInputTransformer implements InputTransformer {
 		this.catalog = catalog;
 	}
 
+	private GeoParser geoParser;
+	
 
 	private BundleContext bundleContext;
 
@@ -106,7 +120,7 @@ public class XmppInputTransformer implements InputTransformer {
 	      else{
 	    	  newEntry = null;
 	      }
-	      
+	      log.info(newEntry.getSubject()+" is subject");
 
 	      MetacardImpl metacard = new MetacardImpl();
 	      metacard.setTitle(newEntry.getSubject());
@@ -118,12 +132,12 @@ public class XmppInputTransformer implements InputTransformer {
 	      } catch (Exception e) {
 	        metacard.setThumbnail(IOUtils.toByteArray((FrameworkUtil.getBundle(XmppInputTransformer.class).getResource("images/nyt.ico").openConnection().getInputStream())));
 	      }
+	      
+	      List<ResolvedLocation> results = getResolvedLocationsForString(StringEscapeUtils.escapeXml(newEntry.getBody().replaceAll("[^a-zA-Z0-9]+", " ")));
 
-	      List<ResolvedLocation> locations = locationDataFromEntry(newEntry);
-
-	      if(!locations.isEmpty())
-	        metacard.setLocation(WKTWriter.toPoint(new Coordinate(locations.get(0).geoname.longitude, locations.get(0).geoname.latitude)));
-
+	      if(results!=null && !results.isEmpty()){
+	        metacard.setLocation(WKTWriter.toPoint(new Coordinate(results.get(0).geoname.longitude, results.get(0).geoname.latitude)));
+	      }
 	      metacard.setMetadata("<?xml version=\"1.0\"?>\n<metadata>\n" +
 	              "<title>\n" + newEntry.getSubject() + "\n</title>\n" +
 	              "<description>\n" + StringEscapeUtils.escapeXml(newEntry.getBody()) + "\n</description>\n" +
@@ -137,25 +151,26 @@ public class XmppInputTransformer implements InputTransformer {
 	  }
 
 	  private List<ResolvedLocation> getResolvedLocationsForString(String string){
-	    List<ResolvedLocation> resolvedLocations = null;
+		  List<ResolvedLocation> results = null;
 	    try {
+	    	log.info("Starting Parser");
 	    	
-	    	GeoParser geoParser = new GeoParser("/opt/CLAVIN/IndexDirectory");
-	      resolvedLocations = geoParser.parse(WordUtils.capitalize(string));
-	    } catch (Exception e) {
-	      log.error(e);
+	    	results = geoParser.parse(WordUtils.capitalize(string));
+	    	log.info(results);
 	    }
-	    return resolvedLocations;
+	    catch (ParseException e) {
+	   	      log.info(e.getMessage());
+	   	    }  	    
+	    catch (IOException e) {
+	   	      log.info(e.getMessage());
+	   	    }  	      
+	     catch (Exception e) {
+	      log.error(e.getMessage());
+	    }
+	    return results;
 	  }
 
-	  private List<ResolvedLocation> locationDataFromEntry(Message newEntry) {
-
-	      List<ResolvedLocation> locations = getResolvedLocationsForString(newEntry.getBody());
-	      
-	        return locations;
-	      
-	      
-	  }
+	
 
 	  private String bytesToHex(byte[] bytes) {
 	    final char[] hexArray = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
@@ -177,7 +192,7 @@ public class XmppInputTransformer implements InputTransformer {
 
 	  private boolean isEntryInCatalog(Message entry) throws UnsupportedQueryException, SourceUnavailableException, FederationException, NoSuchAlgorithmException {
 	    FilterFactoryImpl filterFactory = new FilterFactoryImpl() ;
-	    Filter filter = filterFactory.like(filterFactory.property(Metacard.ANY_TEXT), getHashCode(entry.getBody()));
+	    Filter filter = filterFactory.like(filterFactory.property(Metacard.ANY_TEXT), getHashCode(StringEscapeUtils.escapeXml(entry.getBody())));
 	    Query query = new QueryImpl(filter);
 
 	    QueryRequest request = new QueryRequestImpl(query);

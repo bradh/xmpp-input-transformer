@@ -25,6 +25,9 @@ public class Xmpp implements IXmpp {
 	static final Logger log = Logger.getLogger(Xmpp.class);
 	
 	private CatalogFramework catalog;
+	private String pDirectory;
+	
+	
 	private ArrayList<XMPPConnection> connections = new ArrayList<XMPPConnection>();
 	
 	public void setCatalog(CatalogFramework catalog) {
@@ -34,7 +37,6 @@ public class Xmpp implements IXmpp {
 
 	public void init() throws IOException, XMPPException, ParseException, InterruptedException, InvalidSyntaxException{
 		    
-		 	
 		 	
 		  }
 
@@ -106,6 +108,8 @@ public class Xmpp implements IXmpp {
 	        }
 	        XmppMessageListener listener = new XmppMessageListener();
 	        listener.setCatalog(this.catalog);
+	        listener.setpDirectory(this.pDirectory);
+	        log.info(this.pDirectory+" is a directory");
 	        muc.addMessageListener(listener);
 	        
 	        
@@ -129,6 +133,16 @@ public class Xmpp implements IXmpp {
 		 
 		 
 	 }
+
+
+	public String getpDirectory() {
+		return pDirectory;
+	}
+
+
+	public void setpDirectory(String pDirectory) {
+		this.pDirectory = pDirectory;
+	}
 	 
 	
 }

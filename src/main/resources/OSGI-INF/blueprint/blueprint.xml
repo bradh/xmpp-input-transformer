@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
 	xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+	xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://svn.apache.org/repos/asf/aries/trunk/blueprint/blueprint-cm/src/main/resources/org/apache/aries/blueprint/compendium/cm/blueprint-cm-1.1.0.xsd"
 	default-activation="eager">
 
+
+	<ext:property-placeholder />
 	<bean id="Xmpp" class="org.codice.opendx.xmpp.Xmpp"
 		init-method="init" depends-on="IXmppClient">
 		<property name="catalog" ref="opendx-fanout" />
+		<property name="pDirectory" value="/data/IndexDirectory"/>
 	</bean>
 	
-	<reference id="opendx-fanout" interface="ddf.catalog.CatalogFramework"/>
+	
 	<reference-list
 		id="IXmppClient" interface="org.codice.opendx.xmpp.IXmppClient"
 		member-type="service-reference" activation="lazy">
 		<reference-listener 
               bind-method="bind" unbind-method="unbind">
-          <bean class="org.codice.opendx.xmpp.Xmpp"/>        
+          <bean class="org.codice.opendx.xmpp.Xmpp">
+          	<property name="catalog" ref="opendx-fanout"/>
+          	<property name="pDirectory" value="/data/IndexDirectory"/>
+          	</bean>        
       </reference-listener>
 </reference-list>
+<reference id="opendx-fanout" interface="ddf.catalog.CatalogFramework"/>
 </blueprint>

@@ -27,7 +27,7 @@
         <ddf.version>2.2.0.RC2</ddf.version>
         <rome.version>1.0</rome.version>
         <clavin.nerd.version>0.3.1</clavin.nerd.version>
-        <clavin.version>0.3.2</clavin.version>
+        <clavin.version>0.3.4-OPENDX</clavin.version>
     </properties>
 
     <distributionManagement>
@@ -189,6 +189,52 @@
 	<artifactId>annotation</artifactId>
 	<version>2.1.0</version>
 </dependency>
+<dependency>
+	<groupId>com.google.code.gson</groupId>
+	<artifactId>gson</artifactId>
+	<version>2.2.3</version>
+</dependency>
+<dependency>
+	<groupId>net.sourceforge.argparse4j</groupId>
+	<artifactId>argparse4j</artifactId>
+	<version>0.4.1</version>
+</dependency>
+  <dependency>
+	<groupId>org.apache.lucene</groupId>
+	<artifactId>lucene-core</artifactId>
+	<version>4.0.0</version>
+</dependency>
+ <dependency>
+	<groupId>org.apache.lucene</groupId>
+	<artifactId>lucene-spatial</artifactId>
+	<version>4.0.0</version>
+</dependency>    
+<dependency>
+	<groupId>org.slf4j</groupId>
+	<artifactId>slf4j-api</artifactId>
+	<version>1.7.2</version>
+</dependency>
+<dependency>
+	<groupId>com.spatial4j</groupId>
+	<artifactId>spatial4j</artifactId>
+	<version>0.3</version>
+</dependency> 
+<dependency>
+	<groupId>com.vividsolutions</groupId>
+	<artifactId>jts</artifactId>
+	<version>1.13</version>
+</dependency>
+    <dependency>
+	<groupId>org.eclipse.birt.runtime.3_7_1</groupId>
+	<artifactId>org.apache.xml.resolver</artifactId>
+	<version>1.2.0</version>
+</dependency>
+       <dependency>
+	<groupId>org.slf4j</groupId>
+	<artifactId>slf4j-log4j12</artifactId>
+	<version>1.7.2</version>
+</dependency>
+                             
     </dependencies>
 
   <build>
@@ -206,13 +252,58 @@
 				<instructions>
 					<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
 					<Service-Component>OSGI-INF/component.xml</Service-Component>
-                    <Embed-Dependency>smack,smackx,clavin,rome,jwnl,opennlp-maxent,opennlp-tools,xercesImpl,lucene-analyzers-common,lucene-core,lucene-queryparser, lucene-queries, lucene-sandbox,jakarta-regexp</Embed-Dependency>
+                    <Embed-Dependency>slf4j-log4j12,org.apache.xml.resolver,jts,spatial4j,gson,argparse4j,lucene-spatial,slf4j-api,smack,smackx,rome,jwnl,opennlp-maxent,opennlp-tools,xercesImpl,lucene-analyzers-common,lucene-core,lucene-queryparser, lucene-queries, lucene-sandbox,jakarta-regexp</Embed-Dependency>
                     <Embed-Transitive>true</Embed-Transitive>
 						<Import-Package>
 						!sun.io.*,
 						!aQute.bnd.annotation.metatype,
-						*
-                        </Import-Package>
+						com.berico.clavin.*,
+            			org.apache.lucene.*;version="4.0.0",
+						com.spatial4j.core.context,
+						com.spatial4j.core.distance,
+						com.spatial4j.core.io,
+						com.spatial4j.core.shape ,
+						com.vividsolutions.jts.geom ,
+						com.vividsolutions.jts.io ,
+						ddf.catalog,
+						ddf.catalog.data,
+						ddf.catalog.federation,
+						ddf.catalog.operation,
+						ddf.catalog.source,
+						ddf.catalog.transform,
+						javax.management,
+						javax.naming.directory,
+						javax.net,
+						javax.net.ssl,
+						javax.security.auth.callback,
+						javax.security.sasl,
+						javax.swing ,
+						javax.xml.parsers ,
+						javax.xml.transform ,
+						javax.xml.transform.dom ,
+						javax.xml.transform.sax ,
+						javax.xml.transform.stream ,
+						org.apache.commons.io,
+						org.apache.commons.lang,
+						org.apache.log4j,
+						org.geotools.filter,
+						org.jdom ,
+						org.jdom.input ,
+						org.jdom.output ,
+						org.opengis.filter,
+						org.opengis.filter.expression ,
+						org.osgi.framework,
+						org.osgi.service.blueprint,
+						org.w3c.dom ,
+						org.w3c.dom.events,
+						org.w3c.dom.ranges,
+						org.w3c.dom.traversal,
+						org.xml.sax,
+						org.xml.sax.ext,
+						org.xml.sax.helpers
+						</Import-Package>
+                        
+                        
 				</instructions>
 
 			</configuration>
