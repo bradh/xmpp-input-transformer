@@ -58,21 +58,23 @@ public class XmppMessageListener implements PacketListener {
 		
 
         public void processPacket(Packet packet) {
-        	logger.info("Start logging Packets");
-        	logger.info(packet);
         	
             Message message = (Message) packet;
             if(message.getBody()!=null && message.getBody()!="" && message.getFrom()!=null && message.getFrom()!=""){
             	XmppInputTransformer xit = new XmppInputTransformer();
+            	
+            	
             	GeoParser geoParser = null;
             	try {
+            		
             		geoParser = GeoParserFactory.getDefault(this.pDirectory);
+            		
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
-					logger.info(e1);
+					logger.error(e1);
 				} catch (ParseException e1) {
 					// TODO Auto-generated catch block
-					logger.info(e1);
+					logger.error(e1);
 				}
             	xit.setCatalog(catalog);
             	xit.setGeoParser(geoParser);
@@ -84,8 +86,9 @@ public class XmppMessageListener implements PacketListener {
 					}
 				} catch (Exception e) {
 					
-					logger.info(e);
+					logger.error(e);
 				}
+            	
             }
 
             

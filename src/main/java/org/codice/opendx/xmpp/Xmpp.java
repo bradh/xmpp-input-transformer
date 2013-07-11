@@ -50,7 +50,7 @@ public class Xmpp implements IXmpp {
 	 
 	 
 	 public void bind(ServiceReference service) throws XMPPException, InterruptedException{
-		 log.info("Found Service "+ service);
+		 
 		 	String login = (String)service.getProperty("login");
 		 	String password = (String)service.getProperty("password");
 		 	String nickname = (String)service.getProperty("nickname");
@@ -59,10 +59,7 @@ public class Xmpp implements IXmpp {
 		 	String server = (String)service.getProperty("server");
 		 	String sASLAuthenticationEnabled = (String)service.getProperty("sASLAuthenticationEnabled").toString();
 		 	
-		    log.info("Starting XmppClient");
-		    log.info("The port is "+port);
-		    log.info("The login is "+login);
-		  
+		    
 		    int packetReplyTimeout = 500;
 			SmackConfiguration.setPacketReplyTimeout(packetReplyTimeout);
 	        

@@ -120,7 +120,7 @@ public class XmppInputTransformer implements InputTransformer {
 	      else{
 	    	  newEntry = null;
 	      }
-	      log.info(newEntry.getSubject()+" is subject");
+	      
 
 	      MetacardImpl metacard = new MetacardImpl();
 	      metacard.setTitle(newEntry.getSubject());
@@ -137,6 +137,7 @@ public class XmppInputTransformer implements InputTransformer {
 
 	      if(results!=null && !results.isEmpty()){
 	        metacard.setLocation(WKTWriter.toPoint(new Coordinate(results.get(0).geoname.longitude, results.get(0).geoname.latitude)));
+	        log.info(metacard.getLocation());
 	      }
 	      metacard.setMetadata("<?xml version=\"1.0\"?>\n<metadata>\n" +
 	              "<title>\n" + newEntry.getSubject() + "\n</title>\n" +
@@ -153,16 +154,16 @@ public class XmppInputTransformer implements InputTransformer {
 	  private List<ResolvedLocation> getResolvedLocationsForString(String string){
 		  List<ResolvedLocation> results = null;
 	    try {
-	    	log.info("Starting Parser");
+	    	
 	    	
 	    	results = geoParser.parse(WordUtils.capitalize(string));
-	    	log.info(results);
+	    	log.info("results are: "+results);
 	    }
 	    catch (ParseException e) {
-	   	      log.info(e.getMessage());
+	   	      log.error(e.getMessage());
 	   	    }  	    
 	    catch (IOException e) {
-	   	      log.info(e.getMessage());
+	   	      log.error(e.getMessage());
 	   	    }  	      
 	     catch (Exception e) {
 	      log.error(e.getMessage());
