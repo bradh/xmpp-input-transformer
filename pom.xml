@@ -252,13 +252,16 @@
 				<instructions>
 					<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
 					<Service-Component>OSGI-INF/component.xml</Service-Component>
-                    <Embed-Dependency>slf4j-log4j12,org.apache.xml.resolver,jts,spatial4j,gson,argparse4j,lucene-spatial,slf4j-api,smack,smackx,rome,jwnl,opennlp-maxent,opennlp-tools,xercesImpl,lucene-analyzers-common,lucene-core,lucene-queryparser, lucene-queries, lucene-sandbox,jakarta-regexp</Embed-Dependency>
+                    <Embed-Dependency>
+                    slf4j-log4j12,org.apache.xml.resolver,jts,spatial4j,gson,argparse4j,lucene-spatial,slf4j-api,
+                    smack,smackx,rome,jwnl,opennlp-maxent,opennlp-tools,xercesImpl,jakarta-regexp
+                    </Embed-Dependency>
                     <Embed-Transitive>true</Embed-Transitive>
 						<Import-Package>
 						!sun.io.*,
 						!aQute.bnd.annotation.metatype,
 						com.berico.clavin.*,
-            			org.apache.lucene.*;version="4.0.0",
+            			org.apache.lucene.*,
 						com.spatial4j.core.context,
 						com.spatial4j.core.distance,
 						com.spatial4j.core.io,
