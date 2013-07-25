@@ -23,7 +23,7 @@
   <description>Input transformer for processing xmpp feed data</description>
  
   <scm>
-    <developerConnection>scm:git:https://github.org/opendx/xmpp-input-transformer.git</developerConnection>
+    <developerConnection>scm:git:https://github.com/OpenDX/xmpp-input-transformer.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
     <properties>
