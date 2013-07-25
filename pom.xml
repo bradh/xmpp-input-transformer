@@ -19,10 +19,13 @@
   <groupId>org.codice.opendx</groupId>
   <artifactId>xmpp-input-transformer</artifactId>
   <name>OPENDX :: TRANSFORMER :: INPUT :: XMPP</name>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.1-SNAPSHOT</version>
   <description>Input transformer for processing xmpp feed data</description>
  
-
+  <scm>
+    <developerConnection>scm:git:git@github.org:opendx/xmpp-input-transformer.git</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
     <properties>
         <ddf.version>2.2.0.RC2</ddf.version>
         <rome.version>1.0</rome.version>
