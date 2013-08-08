@@ -1,7 +1,6 @@
 package org.codice.opendx.xmpp;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 import org.apache.lucene.queryparser.classic.ParseException;
@@ -12,13 +11,12 @@ import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
 import org.jivesoftware.smackx.muc.DiscussionHistory;
 import org.jivesoftware.smackx.muc.MultiUserChat;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
-import org.osgi.framework.ServiceRegistration;
-import org.codice.opendx.xmpp.IXmppClient;
 import ddf.catalog.CatalogFramework;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Xmpp implements IXmpp {
 
@@ -28,7 +26,7 @@ public class Xmpp implements IXmpp {
 	private String pDirectory;
 	
 	
-	private ArrayList<XMPPConnection> connections = new ArrayList<XMPPConnection>();
+	private List<XMPPConnection> connections = new ArrayList<XMPPConnection>();
 	
 	public void setCatalog(CatalogFramework catalog) {
 		this.catalog = catalog;
@@ -64,7 +62,7 @@ public class Xmpp implements IXmpp {
 			SmackConfiguration.setPacketReplyTimeout(packetReplyTimeout);
 	        
 			int portNum = Integer.parseInt(port);
-			Boolean sasl = Boolean.parseBoolean(sASLAuthenticationEnabled);
+			Boolean sasl = Boolean.getBoolean(sASLAuthenticationEnabled);
 			ConnectionConfiguration config = new ConnectionConfiguration(server, portNum);
 	        config.setSASLAuthenticationEnabled(sasl);
 	        if (sasl){
