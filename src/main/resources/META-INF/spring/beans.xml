@@ -27,11 +27,13 @@ http://www.springframework.org/schema/context/spring-context.xsd
 http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-
+ 
    
-    <osgix:managed-service-factory id="XmppClient"
-        factory-pid="XmppClient" update-strategy="container-managed">
-
+    <osgix:managed-service-factory id="IXmppClient"
+        factory-pid="IXmppClient" update-strategy="container-managed">
+<osgix:interfaces>
+      <beans:value>org.codice.opendx.xmpp.IXmppClient</beans:value>
+    </osgix:interfaces>
         
         <beans:bean id="XmppClient" class="org.codice.opendx.xmpp.XmppClient"
                     init-method="init" destroy-method="destroy">
