@@ -254,7 +254,7 @@
 
 				<instructions>
 					<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-					<Service-Component>OSGI-INF/component.xml</Service-Component>
+					
                     <Embed-Dependency>
                     slf4j-log4j12,org.apache.xml.resolver,jts,spatial4j,gson,argparse4j,lucene-spatial,slf4j-api,
                     smack,smackx,rome,jwnl,xercesImpl,jakarta-regexp
