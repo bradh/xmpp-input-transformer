@@ -27,17 +27,19 @@ http://www.springframework.org/schema/context/spring-context.xsd
 http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans.xsd">
 
- 
+ <osgi:reference id="ddf-fanout" interface="ddf.catalog.CatalogFramework"/> 
    
     <osgix:managed-service-factory id="XmppClientServiceFactory"
         factory-pid="XmppClient" update-strategy="container-managed">
 <osgix:interfaces>
       <beans:value>org.codice.opendx.xmpp.IXmppClient</beans:value>
+       <beans:value>ddf.catalog.CatalogFramework</beans:value>
     </osgix:interfaces>
         
         <beans:bean id="XmppClient" class="org.codice.opendx.xmpp.XmppClient"
                     init-method="init" destroy-method="destroy">
-            
+            <beans:property name="catalog" ref="ddf-fanout" />
+            <beans:property name="pDirectory" value="/data/IndexDirectory" />
             <beans:property name="login" value="Test" />
             <beans:property name="password" value="$123qwe!" />
             <beans:property name="nickname" value="TestUser" />

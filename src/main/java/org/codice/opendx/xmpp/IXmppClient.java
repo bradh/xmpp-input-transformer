@@ -14,6 +14,8 @@ package org.codice.opendx.xmpp;
 
 import java.io.Serializable;
 
+import ddf.catalog.CatalogFramework;
+
 
 
 public interface IXmppClient  extends Serializable{
@@ -25,7 +27,15 @@ public interface IXmppClient  extends Serializable{
 	void setPort(String port);
 	void setRoom(String room);
 	void setsASLAuthenticationEnabled(String sASLAuthenticationEnabled);
-	 
-	 
-	 
+	String getLogin();
+	String getPassword();
+	String getNickname();
+	String getServer();
+	String getPort();
+	String getRoom();
+	String getsASLAuthenticationEnabled();
+	CatalogFramework getCatalog();
+	void setCatalog(CatalogFramework catalog);
+	String getpDirectory();
+	void setpDirectory(String pDirectory);
 }

@@ -11,7 +11,8 @@
          <AD name="Port" id="port" required="true" type="String" default="5222" description="Server Port"/>
          <AD name="Room" id="room" required="true" type="String" default="Test@conference.localhost.localdomain" description="Room"/>
          <AD name="Nickname" id="nickname" required="true" type="String" default="TestUser2" description="XMPP Nickname"/>
-         <AD name="SASLAuthenticationEnabled" id="sASLAuthenticationEnabled" required="false" type="Boolean" default="true" description="SASLAuthenticationEnabled"/>        
+         <AD name="SASLAuthenticationEnabled" id="sASLAuthenticationEnabled" required="false" type="Boolean" default="true" description="SASLAuthenticationEnabled"/>  
+         <AD name="Lucene Index Directory" id="pDirectory" required="true" type="String" default="/data/IndexDirectory" description="Places Lucene Index Directory"/>      
      </OCD>
      <Designate pid="XmppClient" bundle="*"
         factoryPid="XmppClient">
