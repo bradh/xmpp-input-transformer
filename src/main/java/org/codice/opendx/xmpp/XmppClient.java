@@ -12,90 +12,78 @@
 package org.codice.opendx.xmpp;
 
 
-import java.util.Map;
-
-import aQute.bnd.annotation.component.Activate;
-import aQute.bnd.annotation.component.Component;
-import aQute.bnd.annotation.component.ConfigurationPolicy;
-import aQute.bnd.annotation.component.Deactivate;
-import aQute.bnd.annotation.metatype.Configurable;
-import aQute.bnd.annotation.metatype.Meta;
 import org.apache.log4j.Logger;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.framework.ServiceReference;
 
-@Component(name = "org.codice.opendx.xmpp.xmppclient",
-designate = XmppClient.Config.class,
-configurationPolicy = ConfigurationPolicy.require)
+
 public class XmppClient implements IXmppClient {
 	
-	interface Config {
-		@Meta.AD(required = true, deflt = "test2")
-		 String login();
-		@Meta.AD(required = true, deflt = "$123qwe!")
-		 String password();
-		@Meta.AD(required = true, deflt = "TestUser2")
-		 String nickname();
-		@Meta.AD(required = true, deflt = "localhost.localdomain")
-		 String server();
-		@Meta.AD(required = true, deflt = "5222")
-		 String port();
-		@Meta.AD(required = true, deflt = "Test@conference.localhost.localdomain")
-		 String room();
-		@Meta.AD(required = true, deflt = "false")
-		 String sASLAuthenticationEnabled();
-	}
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 8441276665745228719L;
 	
 
 	static final Logger log = Logger.getLogger(XmppClient.class);
 	
-		 private Config config;
-	 
-	    @Activate
-	    protected void activate(Map<String, Object> configProps) throws InvalidSyntaxException {
-	    	config = Configurable.createConfigurable(Config.class, configProps);
-	    	
-		 	
-	        
-	    }
-	    @Deactivate
-	    protected void deactivate(Map<String, Object> configProps) {
-	        config = null;
-	        
-	    }
+	private String login;
+	public String getLogin() {
+		return login;
+	}
+	public void setLogin(String login) {
+		this.login = login;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+	public String getServer() {
+		return server;
+	}
+	public void setServer(String server) {
+		this.server = server;
+	}
+	public String getPort() {
+		return port;
+	}
+	public void setPort(String port) {
+		this.port = port;
+	}
+	public String getRoom() {
+		return room;
+	}
+	public void setRoom(String room) {
+		this.room = room;
+	}
+	public String getsASLAuthenticationEnabled() {
+		return sASLAuthenticationEnabled;
+	}
+	public void setsASLAuthenticationEnabled(String sASLAuthenticationEnabled) {
+		this.sASLAuthenticationEnabled = sASLAuthenticationEnabled;
+	}
+	private String password;
+	private String nickname;
+	private String server;
+	private String port;
+	private String room;
+	private String sASLAuthenticationEnabled;
+	
+	public void init() {
+	    
+	 	
+	  }
 
-	   
-	   
-	    public String login() {
-			return config.login();
-		}
-		public String password() {
-			return config.password();
-		}
-		public String nickname() {
-			return config.nickname();
-		}
-		public String server() {
-			return config.server();
-		}
-		public String port() {
-			return config.port();
-		}
-		public String room() {
-			return config.room();
-		}
-		public String sASLAuthenticationEnabled() {
-			return config.sASLAuthenticationEnabled();
-		}
+	public void destroy()  {
+		    
+	}
 		
 	
-	}
+}
 	 
 	
 		
