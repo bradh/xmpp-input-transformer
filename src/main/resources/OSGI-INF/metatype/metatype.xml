@@ -4,7 +4,7 @@
      xsi:schemaLocation="
          http://www.osgi.org/xmlns/metatype/v1.1.0 http://www.osgi.org/xmlns/metatype/v1.1.0/metatype.xsd
      ">
-     <OCD description="XMPP Input Transform configuration" name="XMPPClient" id="org.codice.opendx.xmpp.xmppclient">
+     <OCD description="XMPP Input Transform configuration" name="XMPPClient" id="XmppClient">
          <AD name="Login" id="login" required="true" type="String" default="test2" description="XMPP Login"/>
          <AD name="Password" id="password" required="true" type="String" default="$123qwe!" description="XMPP Password"/>
          <AD name="Server" id="server" required="true" type="String" default="localhost.localdomain" description="Fully Qualified Server Name"/>
@@ -13,8 +13,8 @@
          <AD name="Nickname" id="nickname" required="true" type="String" default="TestUser2" description="XMPP Nickname"/>
          <AD name="SASLAuthenticationEnabled" id="sASLAuthenticationEnabled" required="false" type="Boolean" default="true" description="SASLAuthenticationEnabled"/>        
      </OCD>
-     <Designate pid="org.codice.opendx.xmpp.xmppclient" bundle="*"
-        factoryPid="org.codice.opendx.xmpp.xmppclient">
-        <Object ocdref="org.codice.opendx.xmpp.xmppclient" />
+     <Designate pid="XmppClient" bundle="*"
+        factoryPid="XmppClient">
+        <Object ocdref="XmppClient" />
      </Designate>
 </MetaData>
