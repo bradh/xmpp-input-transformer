@@ -257,8 +257,7 @@
 					
                     <Embed-Dependency>
                     slf4j-log4j12,org.apache.xml.resolver,jts,spatial4j,gson,argparse4j,lucene-spatial,slf4j-api,
-                    smack,smackx,rome,jwnl,xercesImpl,jakarta-regexp
-                    </Embed-Dependency>
+                    smack,smackx,rome,jwnl,jakarta-regexp;scope=compile|runtime;artifactId=!spring-core|spring-jdbc|spring-aop|spring-asm|spring-beans|spring-context|spring-context-support|spring-expression|spring-tx|aopalliance|com.springsource.org.aopalliance|commons-collections|commons-logging|org.apache.felix.framework|icu4j|xercesImpl</Embed-Dependency>
                     <Embed-Transitive>true</Embed-Transitive>
 						<Import-Package>
 						!sun.io.*,
