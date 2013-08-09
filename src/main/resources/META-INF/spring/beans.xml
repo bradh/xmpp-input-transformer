@@ -36,9 +36,8 @@ http://www.springframework.org/schema/beans/spring-beans.xsd">
         factory-pid="XmppClient" update-strategy="container-managed">
 <osgix:interfaces>
       <beans:value>org.codice.opendx.xmpp.IXmppClient</beans:value>
-       <beans:value>ddf.catalog.CatalogFramework</beans:value>
     </osgix:interfaces>
-         
+        
         <beans:bean id="XmppClient" class="org.codice.opendx.xmpp.XmppClient"
                     init-method="init" destroy-method="destroy">
             <beans:property name="catalog" ref="ddf-fanout" />
