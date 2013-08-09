@@ -13,6 +13,7 @@ package org.codice.opendx.xmpp;
 
 
 import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -23,6 +24,11 @@ import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
 import org.jivesoftware.smackx.muc.DiscussionHistory;
 import org.jivesoftware.smackx.muc.MultiUserChat;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.service.cm.ConfigurationAdmin;
+import org.osgi.service.cm.ConfigurationException;
+import org.osgi.service.cm.ManagedServiceFactory;
 
 import ddf.catalog.CatalogFramework;
 
@@ -33,7 +39,7 @@ public class XmppClient implements IXmppClient {
 	private static final long serialVersionUID = 8441276665745228719L;
 	private CatalogFramework catalog;
 	private String pDirectory;
-	
+	private BundleContext context;
 	
 	public CatalogFramework getCatalog() {
 		return catalog;
@@ -168,6 +174,9 @@ public class XmppClient implements IXmppClient {
 			  
 		}
 	}
+	
+	
+	
 		
 	
 }
