@@ -38,4 +38,5 @@ public interface IXmppClient  extends Serializable{
 	void setCatalog(CatalogFramework catalog);
 	String getpDirectory();
 	void setpDirectory(String pDirectory);
+	
 }
