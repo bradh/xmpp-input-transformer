@@ -164,15 +164,37 @@ public class XmppClient implements IXmppClient {
 	 	
 	  }
 
-	public void destroy()  {
+	public void destroy() throws XMPPException, InterruptedException  {
 		log.info("in the destroy");
-		for(XMPPConnection connection : connections){
-			
-			if(connection.getUser()==login){
-				connection.disconnect();
-			}
-			  
-		}
+		int packetReplyTimeout = 500;
+		SmackConfiguration.setPacketReplyTimeout(packetReplyTimeout);
+        
+		int portNum = Integer.parseInt(port);
+		Boolean sasl = Boolean.getBoolean(sASLAuthenticationEnabled);
+		ConnectionConfiguration config = new ConnectionConfiguration(server, portNum);
+        config.setSASLAuthenticationEnabled(sasl);
+        if (sasl){
+        	config.setSecurityMode(SecurityMode.enabled);
+        }else{
+        	config.setSecurityMode(SecurityMode.disabled);
+        }
+        
+        XMPPConnection connection = new XMPPConnection(config);
+        if(!connections.contains(connection)){
+        
+        	
+        log.info("Starting Connection");
+        connection.connect();
+        Thread.sleep(3600);
+        if(connection.isConnected()){
+        connection.login(login, password);
+        
+        }
+        Thread.sleep(3600);
+        if(connection.isAuthenticated()){
+        connection.disconnect();
+        }
+        }
 	}
 	
 	
