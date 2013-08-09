@@ -165,7 +165,7 @@ public class XmppClient implements IXmppClient {
 	  }
 
 	public void destroy() throws XMPPException, InterruptedException  {
-		log.info("in the destroy");
+		
 		int packetReplyTimeout = 500;
 		SmackConfiguration.setPacketReplyTimeout(packetReplyTimeout);
         
@@ -183,7 +183,7 @@ public class XmppClient implements IXmppClient {
         if(!connections.contains(connection)){
         
         	
-        log.info("Starting Connection");
+        log.info("Stopping Connection for "+login);
         connection.connect();
         Thread.sleep(3600);
         if(connection.isConnected()){
