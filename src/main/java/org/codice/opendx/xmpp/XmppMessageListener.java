@@ -15,6 +15,7 @@ package org.codice.opendx.xmpp;
 
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.lucene.queryparser.classic.ParseException;
@@ -80,9 +81,11 @@ public class XmppMessageListener implements PacketListener {
             	xit.setGeoParser(geoParser);
             	
             	try {
-					Metacard metacard = xit.transform(message);
-					if(metacard!=null){
+					List<Metacard> metacards = xit.transform(message);
+					if(metacards!=null && !metacards.isEmpty()){
+						for(Metacard metacard : metacards){
 						insertMetacard(metacard);
+					}
 					}
 				} catch (Exception e) {
 					
