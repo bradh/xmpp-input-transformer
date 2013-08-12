@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -88,74 +89,76 @@ public class XmppInputTransformer implements InputTransformer {
 	  static {
 		    ISO_8601_DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
 		  }
-	  public Metacard transform(Message message) throws Exception {
+	  public List<Metacard> transform(Message message) throws Exception {
 	    return transform(message, null);
 	  }
 
 
-	  public Metacard transform(Message message, String id) throws IOException, CatalogTransformerException, Exception {
+	  public List<Metacard> transform(Message message, String id) throws IOException, CatalogTransformerException, Exception {
 	    log.info("Received chat message beginning transformation");
-
+	    List<Metacard> metacards = new ArrayList<Metacard>();
 	    if (message == null) {
 	      throw new CatalogTransformerException("Cannot transform null input.");
 	    }
 	    log.info(message.getBody());
-	   
-	      Message newEntry = new Message();
-	      if(!isEntryInCatalog(message)){
-	    	  newEntry.setBody(message.getBody());
-	    	  newEntry.setFrom(message.getFrom());
-	    	  newEntry.setPacketID(message.getPacketID());
-	    	  if(message.getSubject()!=null && message.getSubject()!=""){
-	    	  newEntry.setSubject(message.getSubject());
-	    	  }
-	    	  else
-	    	  {
-	    		  newEntry.setSubject(StringEscapeUtils.escapeXml(message.getBody()));
-	    	  }
-	    	  newEntry.setThread(message.getThread());
-	    	  newEntry.setTo(message.getTo());
-	    	  newEntry.setType(message.getType());
-	      }
-	      else{
-	    	  newEntry = null;
-	      }
-	      
+	    List<ResolvedLocation> places = getResolvedLocationsForString(StringEscapeUtils.escapeXml(message.getBody().replaceAll("[^a-zA-Z0-9]+", " ")));
+	    for(ResolvedLocation place: places){
+	    	
+	    	Message newEntry = new Message();
+		      if(!isEntryInCatalog(message, place)){
+		    	  newEntry.setBody(message.getBody());
+		    	  newEntry.setFrom(message.getFrom());
+		    	  newEntry.setPacketID(message.getPacketID());
+		    	  if(message.getSubject()!=null && message.getSubject()!=""){
+		    	  newEntry.setSubject(message.getSubject());
+		    	  }
+		    	  else
+		    	  {
+		    		  newEntry.setSubject(StringEscapeUtils.escapeXml(message.getBody()));
+		    	  }
+		    	  newEntry.setThread(message.getThread());
+		    	  newEntry.setTo(message.getTo());
+		    	  newEntry.setType(message.getType());
+		      }
+		      else{
+		    	  newEntry = null;
+		      }
+		      
 
-	      MetacardImpl metacard = new MetacardImpl();
-	      metacard.setTitle(newEntry.getSubject());
+		      MetacardImpl metacard = new MetacardImpl();
+		      metacard.setTitle(newEntry.getSubject());
 
-	      metacard.setContentTypeName(CONTENT_TYPE);
-	      
-	      try{
-	        metacard.setThumbnail(IOUtils.toByteArray(new FileInputStream((this.getClass().getResource("/images/nyt.ico").getFile()))));
-	      } catch (Exception e) {
-	        metacard.setThumbnail(IOUtils.toByteArray((FrameworkUtil.getBundle(XmppInputTransformer.class).getResource("images/nyt.ico").openConnection().getInputStream())));
-	      }
-	      
-	      List<ResolvedLocation> results = getResolvedLocationsForString(StringEscapeUtils.escapeXml(newEntry.getBody().replaceAll("[^a-zA-Z0-9]+", " ")));
+		      metacard.setContentTypeName(CONTENT_TYPE);
+		      
+		      try{
+		        metacard.setThumbnail(IOUtils.toByteArray(new FileInputStream((this.getClass().getResource("/images/nyt.ico").getFile()))));
+		      } catch (Exception e) {
+		        metacard.setThumbnail(IOUtils.toByteArray((FrameworkUtil.getBundle(XmppInputTransformer.class).getResource("images/nyt.ico").openConnection().getInputStream())));
+		      }
+		      
 
-	      if(results!=null && !results.isEmpty()){
-	        metacard.setLocation(WKTWriter.toPoint(new Coordinate(results.get(0).geoname.longitude, results.get(0).geoname.latitude)));
-	        log.info(metacard.getLocation());
-	      }
-	      metacard.setMetadata("<?xml version=\"1.0\"?>\n<metadata>\n" +
-	              "<title>\n" + newEntry.getSubject() + "\n</title>\n" +
-	              "<description>\n" + StringEscapeUtils.escapeXml(newEntry.getBody()) + "\n</description>\n" +
-	              "<hashcode>" +getHashCode(newEntry.getBody()) + "</hashcode>\n" +
-	              "</metadata>");
-	      log.info("Metacard " + metacard.getTitle() + "(" + metacard.getId() + ")" + " created");
-	      log.info("Metacard " + metacard.getMetadata() );
-	      return metacard;
-	    
+		      
+		      if(place!=null){
+		        metacard.setLocation(WKTWriter.toPoint(new Coordinate(place.geoname.longitude, place.geoname.latitude)));
+		        log.info(metacard.getLocation());
+		      }
+		      metacard.setMetadata("<?xml version=\"1.0\"?>\n<metadata>\n" +
+		              "<title>\n" + newEntry.getSubject() + "\n</title>\n" +
+		              "<description>\n" + StringEscapeUtils.escapeXml(newEntry.getBody()) + "\n</description>\n" +
+		              "<hashcode>" +getHashCode(newEntry.getBody()+" - "+place.matchedName) + "</hashcode>\n" +
+		              "</metadata>");
+		      log.info("Metacard " + metacard.getTitle() + "(" + metacard.getId() + ")" + " created");
+		      log.info("Metacard " + metacard.getMetadata() );
+		      metacards.add(metacard);
+	    	
+	    }
+	        return metacards;
 
 	  }
 
 	  private List<ResolvedLocation> getResolvedLocationsForString(String string){
 		  List<ResolvedLocation> results = null;
 	    try {
-	    	
-	    	
 	    	results = geoParser.parse(WordUtils.capitalize(string));
 	    	log.info("results are: "+results);
 	    }
@@ -191,9 +194,9 @@ public class XmppInputTransformer implements InputTransformer {
 	    return bytesToHex(md.digest());
 	  }
 
-	  private boolean isEntryInCatalog(Message entry) throws UnsupportedQueryException, SourceUnavailableException, FederationException, NoSuchAlgorithmException {
+	  private boolean isEntryInCatalog(Message entry, ResolvedLocation place) throws UnsupportedQueryException, SourceUnavailableException, FederationException, NoSuchAlgorithmException {
 	    FilterFactoryImpl filterFactory = new FilterFactoryImpl() ;
-	    Filter filter = filterFactory.like(filterFactory.property(Metacard.ANY_TEXT), getHashCode(StringEscapeUtils.escapeXml(entry.getBody())));
+	    Filter filter = filterFactory.like(filterFactory.property(Metacard.ANY_TEXT), getHashCode(StringEscapeUtils.escapeXml(entry.getBody()+" - "+place.matchedName)));
 	    Query query = new QueryImpl(filter);
 
 	    QueryRequest request = new QueryRequestImpl(query);
@@ -202,7 +205,7 @@ public class XmppInputTransformer implements InputTransformer {
 	    	
 	    }
 	    QueryResponse response = catalog.query(request);
-	    log.info("found " + response.getResults().size() + " with " + entry.getBody().replaceAll("[^a-zA-Z0-9]+", " ") + " " + getHashCode(entry.getBody()));
+	    log.info("found " + response.getResults().size() + " with " + entry.getBody().replaceAll("[^a-zA-Z0-9]+", " ") + " " + getHashCode(entry.getBody()+" - "+place.matchedName));
 	    return !response.getResults().isEmpty();
 	    
 	    
