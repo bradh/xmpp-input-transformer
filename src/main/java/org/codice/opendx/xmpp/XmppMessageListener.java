@@ -14,17 +14,19 @@ package org.codice.opendx.xmpp;
 
 
 
-import java.io.IOException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.apache.lucene.queryparser.classic.ParseException;
 import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 
 import com.berico.clavin.GeoParser;
 import com.berico.clavin.GeoParserFactory;
+import com.berico.clavin.extractor.LocationExtractor;
+import com.berico.clavin.nerd.ExternalSequenceClassifierProvider;
+import com.berico.clavin.nerd.NerdLocationExtractor;
+import com.berico.clavin.nerd.SequenceClassifierProvider;
 
 
 import ddf.catalog.CatalogFramework;
@@ -65,20 +67,10 @@ public class XmppMessageListener implements PacketListener {
             	XmppInputTransformer xit = new XmppInputTransformer();
             	
             	
-            	GeoParser geoParser = null;
-            	try {
             		
-            		geoParser = GeoParserFactory.getDefault(this.pDirectory);
-            		
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					logger.error(e1);
-				} catch (ParseException e1) {
-					// TODO Auto-generated catch block
-					logger.error(e1);
-				}
+            	
             	xit.setCatalog(catalog);
-            	xit.setGeoParser(geoParser);
+            	
             	
             	try {
 					List<Metacard> metacards = xit.transform(message);
