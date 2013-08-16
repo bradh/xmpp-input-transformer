@@ -29,8 +29,8 @@
     <properties>
         <ddf.version>2.2.0.RC2</ddf.version>
         <rome.version>1.0</rome.version>
-        <clavin.nerd.version>0.3.1</clavin.nerd.version>
-        <clavin.version>0.3.4-OPENDX</clavin.version>
+        <clavin.nerd.version>0.4.2</clavin.nerd.version>
+        <clavin.version>0.4.2-OPENDX</clavin.version>
     </properties>
 
     <distributionManagement>
@@ -49,13 +49,8 @@
     </distributionManagement>
 
     <repositories>
-        <repository>
-            <id>nexus.bericotechnologies.com</id>
-            <name>Berico Technologies Nexus</name>
-            <url>http://nexus.bericotechnologies.com/content/groups/public</url>
-            <releases><enabled>true</enabled></releases>
-            <snapshots><enabled>true</enabled></snapshots>
-        </repository>
+        
+        
         <repository>
             <id>opengeo.org</id>
             <name>opengeo</name>
@@ -97,20 +92,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>1.9.0</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-all</artifactId>
-            <version>1.1</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>xmlunit</groupId>
             <artifactId>xmlunit</artifactId>
             <version>1.3</version>
@@ -134,11 +115,16 @@
             <artifactId>rome</artifactId>
             <version>${rome.version}</version>
         </dependency>
-
-        <dependency>
+		
+         <dependency>
             <groupId>com.berico</groupId>
             <artifactId>clavin</artifactId>
             <version>${clavin.version}</version>
+        </dependency>
+<dependency>
+            <groupId>com.berico</groupId>
+            <artifactId>clavin-nerd</artifactId>
+            <version>0.4.2</version>
         </dependency>
 
         <dependency>
@@ -205,12 +191,12 @@
   <dependency>
 	<groupId>org.apache.lucene</groupId>
 	<artifactId>lucene-core</artifactId>
-	<version>4.0.0</version>
+	<version>4.3.0</version>
 </dependency>
  <dependency>
 	<groupId>org.apache.lucene</groupId>
 	<artifactId>lucene-spatial</artifactId>
-	<version>4.0.0</version>
+	<version>4.3.0</version>
 </dependency>    
 <dependency>
 	<groupId>org.slf4j</groupId>
@@ -237,7 +223,73 @@
 	<artifactId>slf4j-log4j12</artifactId>
 	<version>1.7.2</version>
 </dependency>
-                             
+     <dependency>
+	<groupId>edu.stanford.nlp</groupId>
+	<artifactId>stanford-corenlp</artifactId>
+	<version>1.3.0</version>
+</dependency>
+            <dependency>
+	<groupId>xom</groupId>
+	<artifactId>xom</artifactId>
+	<version>1.2.5</version>
+</dependency>   
+<dependency>
+	<groupId>junit</groupId>
+	<artifactId>junit</artifactId>
+	<version>4.5</version>
+</dependency>
+   <dependency>
+	<groupId>joda-time</groupId>
+	<artifactId>joda-time</artifactId>
+	<version>2.2</version>
+</dependency>
+<dependency>
+	<groupId>org.joda</groupId>
+	<artifactId>joda-convert</artifactId>
+	<version>1.2</version>
+</dependency>
+       <dependency>
+	<groupId>de.jollyday</groupId>
+	<artifactId>jollyday</artifactId>
+	<version>0.4.7</version>
+</dependency>
+  <dependency>
+	<groupId>org.objenesis</groupId>
+	<artifactId>objenesis</artifactId>
+	<version>1.2</version>
+</dependency><dependency>
+	<groupId>org.mockito</groupId>
+	<artifactId>mockito-core</artifactId>
+	<version>1.9.5</version>
+</dependency><dependency>
+	<groupId>org.hamcrest</groupId>
+	<artifactId>hamcrest-core</artifactId>
+	<version>1.1</version>
+</dependency>
+   <dependency>
+	<groupId>com.googlecode.efficient-java-matrix-library</groupId>
+	<artifactId>ejml</artifactId>
+	<version>0.19</version>
+</dependency><dependency>
+	<groupId>org.apache.ant</groupId>
+	<artifactId>ant</artifactId>
+	<version>1.9.2</version>
+</dependency><dependency>
+	<groupId>org.apache.ant</groupId>
+	<artifactId>ant-launcher</artifactId>
+	<version>1.9.2</version>
+</dependency>
+            <dependency>
+	<groupId>commons-lang</groupId>
+	<artifactId>commons-lang</artifactId>
+	<version>2.6</version>
+</dependency>
+            <dependency>
+	<groupId>log4j</groupId>
+	<artifactId>log4j</artifactId>
+	<version>1.2.17</version>
+</dependency>
+               
     </dependencies>
 
   <build>
@@ -256,232 +308,69 @@
 					<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
 					
                     <Embed-Dependency>
-                    slf4j-log4j12,org.apache.xml.resolver,jts,spatial4j,gson,argparse4j,lucene-spatial,slf4j-api,
+            ant, ant-launcher,ejml,hamcrest-core, mockito-core, objenesis,jollyday,joda-convert,joda-time,junit,xom,stanford-corenlp, clavin-nerd,slf4j-log4j12,org.apache.xml.resolver,jts,spatial4j,gson,argparse4j,lucene-spatial,slf4j-api,
                     smack,smackx,rome,jwnl,jakarta-regexp;scope=compile|runtime;artifactId=!spring-core|spring-jdbc|spring-aop|spring-asm|spring-beans|spring-context|spring-context-support|spring-expression|spring-tx|aopalliance|com.springsource.org.aopalliance|commons-collections|commons-logging|org.apache.felix.framework|icu4j|xercesImpl</Embed-Dependency>
                     <Embed-Transitive>true</Embed-Transitive>
 						<Import-Package>
 						!sun.io.*,
-						!aQute.bnd.annotation.metatype,
-						com.berico.clavin;version=0.3.4.OPENDX,
-						com.berico.clavin.extractor;version=0.3.4.OPENDX,
-						com.berico.clavin.gazetteer;version=0.3.4.OPENDX,
-						com.berico.clavin.index;version=0.3.4.OPENDX,
-						com.berico.clavin.resolver;version=0.3.4.OPENDX,
-						com.berico.clavin.resolver.lucene;version=0.3.4.OPENDX,
-						com.berico.clavin.util;version=0.3.4.OPENDX,
-						net.didion.jwnl;version=0.3.4.OPENDX,
-						net.didion.jwnl.data;version=0.3.4.OPENDX,
-						net.didion.jwnl.data.list;version=0.3.4.OPENDX,
-						net.didion.jwnl.data.relationship;version=0.3.4.OPENDX,
-						net.didion.jwnl.dictionary;version=0.3.4.OPENDX,
-						net.didion.jwnl.dictionary.database;version=0.3.4.OPENDX,
-						net.didion.jwnl.dictionary.file;version=0.3.4.OPENDX,
-						net.didion.jwnl.dictionary.file_manager;version=0.3.4.OPENDX,
-						net.didion.jwnl.dictionary.morph;version=0.3.4.OPENDX,
-						net.didion.jwnl.princeton.data;version=0.3.4.OPENDX,
-						net.didion.jwnl.princeton.file;version=0.3.4.OPENDX,
-						net.didion.jwnl.util;version=0.3.4.OPENDX,
-						net.didion.jwnl.util.cache;version=0.3.4.OPENDX,
-						net.didion.jwnl.util.factory;version=0.3.4.OPENDX,
-						opennlp.maxent;version=1.5.2.incubating,
-						opennlp.maxent.io;version=1.5.2.incubating,
-						opennlp.model;version=1.5.2.incubating,
-						opennlp.perceptron;version=1.5.2.incubating,
-						opennlp.tools.chunker;version=1.5.2.incubating,
-						opennlp.tools.cmdline;version=1.5.2.incubating,
-						opennlp.tools.cmdline.chunker;version=1.5.2.incubating,
-						opennlp.tools.cmdline.dictionary;version=1.5.2.incubating,
-						opennlp.tools.cmdline.doccat;version=1.5.2.incubating,
-						opennlp.tools.cmdline.namefind;version=1.5.2.incubating,
-						opennlp.tools.cmdline.params;version=1.5.2.incubating,
-						opennlp.tools.cmdline.parser;version=1.5.2.incubating,
-						opennlp.tools.cmdline.postag;version=1.5.2.incubating,
-						opennlp.tools.cmdline.sentdetect;version=1.5.2.incubating,
-						opennlp.tools.cmdline.tokenizer;version=1.5.2.incubating,
-						opennlp.tools.coref;version=1.5.2.incubating,
-						opennlp.tools.coref.mention;version=1.5.2.incubating,
-						opennlp.tools.coref.resolver;version=1.5.2.incubating,
-						opennlp.tools.coref.sim;version=1.5.2.incubating,
-						opennlp.tools.dictionary;version=1.5.2.incubating,
-						opennlp.tools.dictionary.serializer;version=1.5.2.incubating,
-						opennlp.tools.doccat;version=1.5.2.incubating,
-						opennlp.tools.formats;version=1.5.2.incubating,
-						opennlp.tools.formats.ad;version=1.5.2.incubating,
-						opennlp.tools.lang.english;version=1.5.2.incubating,
-						opennlp.tools.lang.spanish;version=1.5.2.incubating,
-						opennlp.tools.namefind;version=1.5.2.incubating,
-						opennlp.tools.ngram;version=1.5.2.incubating,
-						opennlp.tools.parser;version=1.5.2.incubating,
-						opennlp.tools.parser.chunking;version=1.5.2.incubating,
-						opennlp.tools.parser.lang.en;version=1.5.2.incubating,
-						opennlp.tools.parser.treeinsert;version=1.5.2.incubating,
-						opennlp.tools.postag;version=1.5.2.incubating,
-						opennlp.tools.sentdetect;version=1.5.2.incubating,
-						opennlp.tools.sentdetect.lang;version=1.5.2.incubating,
-						opennlp.tools.sentdetect.lang.th;version=1.5.2.incubating,
-						opennlp.tools.tokenize;version=1.5.2.incubating,
-						opennlp.tools.tokenize.lang;version=1.5.2.incubating,
-						opennlp.tools.tokenize.lang.en;version=1.5.2.incubating,
-						opennlp.tools.util;version=1.5.2.incubating,
-						opennlp.tools.util.eval;version=1.5.2.incubating,
-						opennlp.tools.util.featuregen;version=1.5.2.incubating,
-						opennlp.tools.util.model;version=1.5.2.incubating,
-						org.apache.lucene;version=4.0.0,
-						org.apache.lucene.analysis;version=4.0.0,
-						org.apache.lucene.analysis.ar;version=4.0.0,
-						org.apache.lucene.analysis.bg;version=4.0.0,
-						org.apache.lucene.analysis.br;version=4.0.0,
-						org.apache.lucene.analysis.ca;version=4.0.0,
-						org.apache.lucene.analysis.charfilter;version=4.0.0,
-						org.apache.lucene.analysis.cjk;version=4.0.0,
-						org.apache.lucene.analysis.cn;version=4.0.0,
-						org.apache.lucene.analysis.commongrams;version=4.0.0,
-						org.apache.lucene.analysis.compound;version=4.0.0,
-						org.apache.lucene.analysis.compound.hyphenation;version=4.0.0,
-						org.apache.lucene.analysis.core;version=4.0.0,
-						org.apache.lucene.analysis.cz;version=4.0.0,
-						org.apache.lucene.analysis.da;version=4.0.0,
-						org.apache.lucene.analysis.de;version=4.0.0,
-						org.apache.lucene.analysis.el;version=4.0.0,
-						org.apache.lucene.analysis.en;version=4.0.0,
-						org.apache.lucene.analysis.es;version=4.0.0,
-						org.apache.lucene.analysis.eu;version=4.0.0,
-						org.apache.lucene.analysis.fa;version=4.0.0,
-						org.apache.lucene.analysis.fi;version=4.0.0,
-						org.apache.lucene.analysis.fr;version=4.0.0,
-						org.apache.lucene.analysis.ga;version=4.0.0,
-						org.apache.lucene.analysis.gl;version=4.0.0,
-						org.apache.lucene.analysis.hi;version=4.0.0,
-						org.apache.lucene.analysis.hu;version=4.0.0,
-						org.apache.lucene.analysis.hunspell;version=4.0.0,
-						org.apache.lucene.analysis.hy;version=4.0.0,
-						org.apache.lucene.analysis.id;version=4.0.0,
-						org.apache.lucene.analysis.in;version=4.0.0,
-						org.apache.lucene.analysis.it;version=4.0.0,
-						org.apache.lucene.analysis.lv;version=4.0.0,
-						org.apache.lucene.analysis.miscellaneous;version=4.0.0,
-						org.apache.lucene.analysis.ngram;version=4.0.0,
-						org.apache.lucene.analysis.nl;version=4.0.0,
-						org.apache.lucene.analysis.no;version=4.0.0,
-						org.apache.lucene.analysis.path;version=4.0.0,
-						org.apache.lucene.analysis.pattern;version=4.0.0,
-						org.apache.lucene.analysis.payloads;version=4.0.0,
-						org.apache.lucene.analysis.position;version=4.0.0,
-						org.apache.lucene.analysis.pt;version=4.0.0,
-						org.apache.lucene.analysis.query;version=4.0.0,
-						org.apache.lucene.analysis.reverse;version=4.0.0,
-						org.apache.lucene.analysis.ro;version=4.0.0,
-						org.apache.lucene.analysis.ru;version=4.0.0,
-						org.apache.lucene.analysis.shingle;version=4.0.0,
-						org.apache.lucene.analysis.sinks;version=4.0.0,
-						org.apache.lucene.analysis.snowball;version=4.0.0,
-						org.apache.lucene.analysis.standard;version=4.0.0,
-						org.apache.lucene.analysis.standard.std31;version=4.0.0,
-						org.apache.lucene.analysis.standard.std34;version=4.0.0,
-						org.apache.lucene.analysis.standard.std36;version=4.0.0,
-						org.apache.lucene.analysis.sv;version=4.0.0,
-						org.apache.lucene.analysis.synonym;version=4.0.0,
-						org.apache.lucene.analysis.th;version=4.0.0,
-						org.apache.lucene.analysis.tokenattributes;version=4.0.0,
-						org.apache.lucene.analysis.tr;version=4.0.0,
-						org.apache.lucene.analysis.util;version=4.0.0,
-						org.apache.lucene.analysis.wikipedia;version=4.0.0,
-						org.apache.lucene.codecs;version=4.0.0,
-						org.apache.lucene.codecs.lucene3x;version=4.0.0,
-						org.apache.lucene.codecs.lucene40;version=4.0.0,
-						org.apache.lucene.codecs.lucene40.values;version=4.0.0,
-						org.apache.lucene.codecs.perfield;version=4.0.0,
-						org.apache.lucene.collation;version=4.0.0,
-						org.apache.lucene.collation.tokenattributes;version=4.0.0,
-						org.apache.lucene.document;version=4.0.0,
-						org.apache.lucene.index;version=4.0.0,
-						org.apache.lucene.queries;version=4.0.0,
-						org.apache.lucene.queries.function;version=4.0.0,
-						org.apache.lucene.queries.function.docvalues;version=4.0.0,
-						org.apache.lucene.queries.function.valuesource;version=4.0.0,
-						org.apache.lucene.queries.mlt;version=4.0.0,
-						org.apache.lucene.queryparser.analyzing;version=4.0.0,
-						org.apache.lucene.queryparser.classic;version=4.0.0,
-						org.apache.lucene.queryparser.complexPhrase;version=4.0.0,
-						org.apache.lucene.queryparser.ext;version=4.0.0,
-						org.apache.lucene.queryparser.flexible.core;version=4.0.0,
-						org.apache.lucene.queryparser.flexible.core.builders;version=4.0.0,
-						org.apache.lucene.queryparser.flexible.core.config;version=4.0.0,
-						org.apache.lucene.queryparser.flexible.core.messages;version=4.0.0,
-						org.apache.lucene.queryparser.flexible.core.nodes;version=4.0.0,
-						org.apache.lucene.queryparser.flexible.core.parser;version=4.0.0,
-						org.apache.lucene.queryparser.flexible.core.processors;version=4.0.0,
-						org.apache.lucene.queryparser.flexible.core.util;version=4.0.0,
-						org.apache.lucene.queryparser.flexible.messages;version=4.0.0,
-						org.apache.lucene.queryparser.flexible.precedence;version=4.0.0,
-						org.apache.lucene.queryparser.flexible.precedence.processors;version=4.0.0,
-						org.apache.lucene.queryparser.flexible.standard;version=4.0.0,
-						org.apache.lucene.queryparser.flexible.standard.builders;version=4.0.0,
-						org.apache.lucene.queryparser.flexible.standard.config;version=4.0.0,
-						org.apache.lucene.queryparser.flexible.standard.nodes;version=4.0.0,
-						org.apache.lucene.queryparser.flexible.standard.parser;version=4.0.0,
-						org.apache.lucene.queryparser.flexible.standard.processors;version=4.0.0,
-						org.apache.lucene.queryparser.surround.parser;version=4.0.0,
-						org.apache.lucene.queryparser.surround.query;version=4.0.0,
-						org.apache.lucene.queryparser.xml;version=4.0.0,
-						org.apache.lucene.queryparser.xml.builders;version=4.0.0,
-						org.apache.lucene.sandbox.queries;version=4.0.0,
-						org.apache.lucene.sandbox.queries.regex;version=4.0.0,
-						org.apache.lucene.search;version=4.0.0,
-						org.apache.lucene.search.payloads;version=4.0.0,
-						org.apache.lucene.search.similarities;version=4.0.0,
-						org.apache.lucene.search.spans;version=4.0.0,
-						org.apache.lucene.store;version=4.0.0,
-						org.apache.lucene.util;version=4.0.0,
-						org.apache.lucene.util.automaton;version=4.0.0,
-						org.apache.lucene.util.fst;version=4.0.0,
-						org.apache.lucene.util.mutable;version=4.0.0,
-						org.apache.lucene.util.packed;version=4.0.0,
-						org.apache.regexp;version=0.3.4.OPENDX,
-						org.tartarus.snowball;version=0.3.4.OPENDX,
-						org.tartarus.snowball.ext;version=0.3.4.OPENDX,
-						com.spatial4j.core.context,
-						com.spatial4j.core.distance,
-						com.spatial4j.core.io,
-						com.spatial4j.core.shape ,
-						com.vividsolutions.jts.geom ,
-						com.vividsolutions.jts.io ,
-						ddf.catalog,
-						ddf.catalog.data,
-						ddf.catalog.federation,
-						ddf.catalog.operation,
-						ddf.catalog.source,
-						ddf.catalog.transform,
-						javax.management,
-						javax.naming.directory,
-						javax.net,
-						javax.net.ssl,
-						javax.security.auth.callback,
-						javax.security.sasl,
-						javax.swing ,
-						javax.xml.parsers ,
-						javax.xml.transform ,
-						javax.xml.transform.dom ,
-						javax.xml.transform.sax ,
-						javax.xml.transform.stream ,
-						org.apache.commons.io,
-						org.apache.commons.lang,
-						org.apache.log4j,
-						org.geotools.filter,
-						org.jdom ,
-						org.jdom.input ,
-						org.jdom.output ,
-						org.opengis.filter,
-						org.opengis.filter.expression ,
-						org.osgi.framework,
-						org.osgi.service.blueprint,
-						org.w3c.dom ,
-						org.w3c.dom.events,
-						org.w3c.dom.ranges,
-						org.w3c.dom.traversal,
-						org.xml.sax,
-						org.xml.sax.ext,
-						org.xml.sax.helpers
+						!com.sun.org.apache.xerces.internal.parsers,
+						!com.sun.org.apache.xerces.internal.util,
+						!com.sun.org.apache.xerces.internal.xni.parser,
+						!sun.reflect,
+							COM.jrockit.reflect;resolution:=optional,
+                            jrockit.vm;resolution:=optional,
+                            COM.newmonics.PercClassLoader;resolution:=optional,
+                            com.berico.clavin;version=0.4.2.OPENDX,
+							com.berico.clavin.extractor;version=0.4.2.OPENDX,
+							com.berico.clavin.gazetteer;version=0.4.2.OPENDX,
+							com.berico.clavin.resolver;version=0.4.2.OPENDX,
+							ddf.catalog,
+							ddf.catalog.data,
+							ddf.catalog.federation,
+							ddf.catalog.operation,
+							ddf.catalog.source,
+							ddf.catalog.transform,
+							javax.naming.directory,
+							javax.net,
+							javax.net.ssl,
+							javax.security.auth.callback,
+							javax.security.sasl,
+							javax.swing,
+							javax.swing.filechooser,
+							javax.xml.bind,
+							javax.xml.bind.annotation,
+							javax.xml.namespace,
+							javax.xml.parsers,
+							javax.xml.transform,
+							javax.xml.transform.sax,
+							javax.xml.transform.stream,
+							javax.xml.validation,
+							org.apache.commons.io,
+							org.apache.commons.lang,
+							org.apache.log4j,
+							org.apache.lucene.analysis;version=4.3.0,
+							org.apache.lucene.analysis.tokenattributes;version=4.3.0,
+							org.apache.lucene.document;version=4.3.0,
+							org.apache.lucene.index;version=4.3.0,
+							org.apache.lucene.queries;version=4.3.0,
+							org.apache.lucene.queries.function;version=4.3.0,
+							org.apache.lucene.queries.function.valuesource;version=4.3.0,
+							org.apache.lucene.queryparser.classic;version=4.3.0,
+							org.apache.lucene.search;version=4.3.0,
+							org.apache.lucene.util;version=4.3.0,
+							org.apache.xerces.impl,
+							org.apache.xerces.parsers,
+							org.apache.xerces.xni.parser,
+							org.geotools.filter,
+							org.jdom,
+							org.jdom.input,
+							org.jdom.output,,
+							org.opengis.filter,
+							org.opengis.filter.expression,
+							org.osgi.framework,
+							org.xml.sax,
+							org.xml.sax.ext,
+							org.xml.sax.helpers
 						</Import-Package>
                         
                         
