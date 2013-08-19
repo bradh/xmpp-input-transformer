@@ -24,7 +24,10 @@ import java.util.TimeZone;
 
 import com.berico.clavin.GeoParser;
 import com.berico.clavin.GeoParserFactory;
+import com.berico.clavin.Options;
+import com.berico.clavin.extractor.CoordinateOccurrence;
 import com.berico.clavin.extractor.LocationExtractor;
+import com.berico.clavin.extractor.LocationOccurrence;
 import com.berico.clavin.nerd.ExternalSequenceClassifierProvider;
 import com.berico.clavin.nerd.NerdLocationExtractor;
 import com.berico.clavin.nerd.SequenceClassifierProvider;
@@ -105,12 +108,12 @@ public class XmppInputTransformer implements InputTransformer {
 	    ResolutionContext places = getResolvedLocationsForString(StringEscapeUtils.escapeXml(message.getBody().replaceAll("[^a-zA-Z0-9]+", " ")));
 	    
 	    
-	    log.info("number of places is :"+places.getLocations().size());
+	    log.info("number of places is :"+places.getExtractionContext().getLocations().size());
 	    
-	    if(places.getLocations()!=null && places.getLocations().size()>0){
-	    for(int i=0; i<places.getLocations().size();i++){
-	    	ResolvedLocation place = places.getLocations().get(i);
-	    	ResolvedCoordinate coor = places.getCoordinates().get(i);
+	    if(places.getExtractionContext().getLocations()!=null && places.getExtractionContext().getLocations().size()>0){
+	    for(int i=0; i<places.getExtractionContext().getLocations().size();i++){
+	    	LocationOccurrence place = places.getExtractionContext().getLocations().get(i);
+	    	CoordinateOccurrence<?> coor = places.getExtractionContext().getCoordinates().get(i);
 	    	
 	    	Message newEntry = new Message();
 		      if(!isEntryInCatalog(message, place)){
@@ -147,13 +150,13 @@ public class XmppInputTransformer implements InputTransformer {
 
 		      
 		      if(place!=null){
-		        metacard.setLocation(WKTWriter.toPoint(new Coordinate(coor.getOccurrence().convertToLatLon().getLongitude(), coor.getOccurrence().convertToLatLon().getLatitude())));
+		        metacard.setLocation(WKTWriter.toPoint(new Coordinate(coor.convertToLatLon().getLongitude(), coor.convertToLatLon().getLatitude())));
 		        log.info(metacard.getLocation());
 		      }
 		      metacard.setMetadata("<?xml version=\"1.0\"?>\n<metadata>\n" +
 		              "<title>\n" + newEntry.getSubject() + "\n</title>\n" +
 		              "<description>\n" + StringEscapeUtils.escapeXml(newEntry.getBody()) + "\n</description>\n" +
-		              "<hashcode>" +getHashCode(newEntry.getBody()+" - "+place.getMatchedName()) + "</hashcode>\n" +
+		              "<hashcode>" +getHashCode(newEntry.getBody()+" - "+place.getText()) + "</hashcode>\n" +
 		              "</metadata>");
 		      log.info("Metacard " + metacard.getTitle() + "(" + metacard.getId() + ")" + " created");
 		      log.info("Metacard " + metacard.getMetadata() );
@@ -243,7 +246,7 @@ public class XmppInputTransformer implements InputTransformer {
 			      		GeoParserFactory factory = new GeoParserFactory();
 			      		factory.setLocationExtractor(locationExtractor);
 			      		
-			      	
+			      								
 					geoParser = factory.getDefault("/opt/CLAVIN/IndexDirectory");
 					
 					log.info("After GeoParser");}
@@ -259,7 +262,8 @@ public class XmppInputTransformer implements InputTransformer {
 		    try {
 		    	log.info("Before the parse");
 		    	result = geoParser.parse(WordUtils.capitalize(body));
-		    	log.info("result is: "+result.getLocations());
+		    	log.info("result is: "+result.getExtractionContext().getCoordinates());
+		    	log.info(result.getExtractionContext().getLocations());
 		    }
 		    catch (ParseException e) {
 		   	      log.error(e.getMessage());
@@ -293,9 +297,9 @@ public class XmppInputTransformer implements InputTransformer {
 	    return bytesToHex(md.digest());
 	  }
 
-	  private boolean isEntryInCatalog(Message entry, ResolvedLocation place) throws UnsupportedQueryException, SourceUnavailableException, FederationException, NoSuchAlgorithmException {
+	  private boolean isEntryInCatalog(Message entry, LocationOccurrence place) throws UnsupportedQueryException, SourceUnavailableException, FederationException, NoSuchAlgorithmException {
 	    FilterFactoryImpl filterFactory = new FilterFactoryImpl() ;
-	    Filter filter = filterFactory.like(filterFactory.property(Metacard.ANY_TEXT), getHashCode(StringEscapeUtils.escapeXml(entry.getBody()+" - "+place.getMatchedName())));
+	    Filter filter = filterFactory.like(filterFactory.property(Metacard.ANY_TEXT), getHashCode(StringEscapeUtils.escapeXml(entry.getBody()+" - "+place.getText())));
 	    Query query = new QueryImpl(filter);
 
 	    QueryRequest request = new QueryRequestImpl(query);
@@ -304,7 +308,7 @@ public class XmppInputTransformer implements InputTransformer {
 	    	
 	    }
 	    QueryResponse response = catalog.query(request);
-	    log.info("found " + response.getResults().size() + " with " + entry.getBody().replaceAll("[^a-zA-Z0-9]+", " ") + " " + getHashCode(entry.getBody()+" - "+place.getMatchedName()));
+	    log.info("found " + response.getResults().size() + " with " + entry.getBody().replaceAll("[^a-zA-Z0-9]+", " ") + " " + getHashCode(entry.getBody()+" - "+place.getText()));
 	    return !response.getResults().isEmpty();
 	    
 	    
