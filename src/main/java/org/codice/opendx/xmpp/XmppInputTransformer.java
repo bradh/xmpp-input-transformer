@@ -11,7 +11,6 @@
  **/
 package org.codice.opendx.xmpp;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,18 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
-import com.berico.clavin.GeoParser;
-import com.berico.clavin.GeoParserFactory;
-import com.berico.clavin.Options;
-import com.berico.clavin.extractor.CoordinateOccurrence;
-import com.berico.clavin.extractor.LocationExtractor;
-import com.berico.clavin.extractor.LocationOccurrence;
-import com.berico.clavin.nerd.ExternalSequenceClassifierProvider;
-import com.berico.clavin.nerd.NerdLocationExtractor;
-import com.berico.clavin.nerd.SequenceClassifierProvider;
-import com.berico.clavin.resolver.LocationResolver;
 import com.berico.clavin.resolver.ResolutionContext;
-import com.berico.clavin.resolver.ResolvedCoordinate;
 import com.berico.clavin.resolver.ResolvedLocation;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.io.WKTWriter;
@@ -49,14 +37,11 @@ import ddf.catalog.transform.InputTransformer;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
-import org.apache.lucene.queryparser.classic.ParseException;
 import org.geotools.filter.FilterFactoryImpl;
 import org.jivesoftware.smack.packet.Message;
 import org.opengis.filter.Filter;
 
-import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 
 
@@ -69,7 +54,8 @@ public class XmppInputTransformer implements InputTransformer {
 	
 
 	private CatalogFramework catalog;
-	  public CatalogFramework getCatalog() {
+	
+	public CatalogFramework getCatalog() {
 		return catalog;
 	}
 
@@ -81,9 +67,6 @@ public class XmppInputTransformer implements InputTransformer {
 		this.catalog = catalog;
 	}
 
-	
-
-	private BundleContext bundleContext;
 
 	  public XmppInputTransformer(){
 		    
@@ -105,15 +88,16 @@ public class XmppInputTransformer implements InputTransformer {
 	      throw new CatalogTransformerException("Cannot transform null input.");
 	    }
 	    log.info(message.getBody());
-	    ResolutionContext places = getResolvedLocationsForString(StringEscapeUtils.escapeXml(message.getBody().replaceAll("[^a-zA-Z0-9]+", " ")));
+	    TransformHelper helper = new TransformHelper();
+	    
+	    ResolutionContext places = helper.getResolvedLocationsForString(message.getBody());
 	    
 	    
-	    log.info("number of places is :"+places.getExtractionContext().getLocations().size());
+	    log.info("number of places is :"+places.getLocations().size());
 	    
-	    if(places.getExtractionContext().getLocations()!=null && places.getExtractionContext().getLocations().size()>0){
-	    for(int i=0; i<places.getExtractionContext().getLocations().size();i++){
-	    	LocationOccurrence place = places.getExtractionContext().getLocations().get(i);
-	    	CoordinateOccurrence<?> coor = places.getExtractionContext().getCoordinates().get(i);
+	    if(places.getLocations()!=null && places.getLocations().size()>0){
+	    for(int i=0; i<places.getLocations().size();i++){
+	    	ResolvedLocation place = places.getLocations().get(i);
 	    	
 	    	Message newEntry = new Message();
 		      if(!isEntryInCatalog(message, place)){
@@ -150,13 +134,13 @@ public class XmppInputTransformer implements InputTransformer {
 
 		      
 		      if(place!=null){
-		        metacard.setLocation(WKTWriter.toPoint(new Coordinate(coor.convertToLatLon().getLongitude(), coor.convertToLatLon().getLatitude())));
+		        metacard.setLocation(WKTWriter.toPoint(new Coordinate(place.getPlace().getCenter().getLongitude(), place.getPlace().getCenter().getLatitude())));
 		        log.info(metacard.getLocation());
 		      }
 		      metacard.setMetadata("<?xml version=\"1.0\"?>\n<metadata>\n" +
 		              "<title>\n" + newEntry.getSubject() + "\n</title>\n" +
 		              "<description>\n" + StringEscapeUtils.escapeXml(newEntry.getBody()) + "\n</description>\n" +
-		              "<hashcode>" +getHashCode(newEntry.getBody()+" - "+place.getText()) + "</hashcode>\n" +
+		              "<hashcode>" +getHashCode(newEntry.getBody()+" - "+place.getMatchedName()) + "</hashcode>\n" +
 		              "</metadata>");
 		      log.info("Metacard " + metacard.getTitle() + "(" + metacard.getId() + ")" + " created");
 		      log.info("Metacard " + metacard.getMetadata() );
@@ -215,67 +199,8 @@ public class XmppInputTransformer implements InputTransformer {
 	  }
 	  }
 
-	  @SuppressWarnings("static-access")
-	private ResolutionContext getResolvedLocationsForString(String body){
-		  ResolutionContext result = null;
-		  
-		  log.info("Here comes the classifier");
-	      	
-	      	SequenceClassifierProvider sequenceClassifierProvider = 
-	      		    new ExternalSequenceClassifierProvider("/opt/CLAVIN-NERD/src/main/resources/all.3class.distsim.crf.ser.gz");
-	      	
-	      	
-	      	LocationExtractor locationExtractor = null;
-				try {
-					locationExtractor = new NerdLocationExtractor(sequenceClassifierProvider);
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-								log.info(e1);				
-
-				}
-				
-					
-
-
-	      		
-	      	GeoParser geoParser = null;
-				try {
-					log.info("Before GeoParser");
-					log.info("LocationExtrator is: "+locationExtractor);
-			      	if(locationExtractor!=null){
-			      		GeoParserFactory factory = new GeoParserFactory();
-			      		factory.setLocationExtractor(locationExtractor);
-			      		
-			      								
-					geoParser = factory.getDefault("/opt/CLAVIN/IndexDirectory");
-					
-					log.info("After GeoParser");}
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					log.info("Exception Message is: "+e1.getMessage());				
-				}
-					log.info("GeoParser :"+ geoParser);
-	      		
-				
-			  
-			  
-		    try {
-		    	log.info("Before the parse");
-		    	result = geoParser.parse(WordUtils.capitalize(body));
-		    	log.info("result is: "+result.getExtractionContext().getCoordinates());
-		    	log.info(result.getExtractionContext().getLocations());
-		    }
-		    catch (ParseException e) {
-		   	      log.error(e.getMessage());
-		   	    }  	    
-		    catch (IOException e) {
-		   	      log.error(e.getMessage());
-		   	    }  	      
-		     catch (Exception e) {
-		      log.error(e.getMessage());
-		    }
-	    return result;
-	  }
+	 
+	
 
 	
 
@@ -297,9 +222,9 @@ public class XmppInputTransformer implements InputTransformer {
 	    return bytesToHex(md.digest());
 	  }
 
-	  private boolean isEntryInCatalog(Message entry, LocationOccurrence place) throws UnsupportedQueryException, SourceUnavailableException, FederationException, NoSuchAlgorithmException {
+	  private boolean isEntryInCatalog(Message entry, ResolvedLocation place) throws UnsupportedQueryException, SourceUnavailableException, FederationException, NoSuchAlgorithmException {
 	    FilterFactoryImpl filterFactory = new FilterFactoryImpl() ;
-	    Filter filter = filterFactory.like(filterFactory.property(Metacard.ANY_TEXT), getHashCode(StringEscapeUtils.escapeXml(entry.getBody()+" - "+place.getText())));
+	    Filter filter = filterFactory.like(filterFactory.property(Metacard.ANY_TEXT), getHashCode(StringEscapeUtils.escapeXml(entry.getBody()+" - "+place.getMatchedName())));
 	    Query query = new QueryImpl(filter);
 
 	    QueryRequest request = new QueryRequestImpl(query);
@@ -308,21 +233,12 @@ public class XmppInputTransformer implements InputTransformer {
 	    	
 	    }
 	    QueryResponse response = catalog.query(request);
-	    log.info("found " + response.getResults().size() + " with " + entry.getBody().replaceAll("[^a-zA-Z0-9]+", " ") + " " + getHashCode(entry.getBody()+" - "+place.getText()));
+	    log.info("found " + response.getResults().size() + " with " + entry.getBody().replaceAll("[^a-zA-Z0-9]+", " ") + " " + getHashCode(entry.getBody()+" - "+place.getMatchedName()));
 	    return !response.getResults().isEmpty();
 	    
 	    
 	  }
 
-
-	public BundleContext getBundleContext() {
-		return bundleContext;
-	}
-
-
-	public void setBundleContext(BundleContext bundleContext) {
-		this.bundleContext = bundleContext;
-	}
 
 
 	public Metacard transform(InputStream arg0) throws IOException,

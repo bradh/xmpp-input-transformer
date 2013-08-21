@@ -16,6 +16,7 @@ package org.codice.opendx.xmpp;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.packet.Message;
@@ -27,6 +28,7 @@ import com.berico.clavin.extractor.LocationExtractor;
 import com.berico.clavin.nerd.ExternalSequenceClassifierProvider;
 import com.berico.clavin.nerd.NerdLocationExtractor;
 import com.berico.clavin.nerd.SequenceClassifierProvider;
+import com.berico.clavin.resolver.ResolutionContext;
 
 
 import ddf.catalog.CatalogFramework;
@@ -64,6 +66,8 @@ public class XmppMessageListener implements PacketListener {
         	
             Message message = (Message) packet;
             if(message.getBody()!=null && message.getBody()!="" && message.getFrom()!=null && message.getFrom()!=""){
+            	
+            	
             	XmppInputTransformer xit = new XmppInputTransformer();
             	
             	
