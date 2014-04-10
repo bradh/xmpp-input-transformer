@@ -27,30 +27,21 @@
     <tag>HEAD</tag>
   </scm>
     <properties>
-        <ddf.version>2.2.0.RC2</ddf.version>
+        <ddf.version>2.2.2</ddf.version>
         <rome.version>1.0</rome.version>
         <clavin.nerd.version>0.4.2</clavin.nerd.version>
         <clavin.version>0.4.2-OPENDX</clavin.version>
     </properties>
 
-    <distributionManagement>
-        <repository>
-            <id>codiceReleases</id>
-            <name>Codice Release Repository</name>
-            <url>https://tools.codice.org/artifacts/content/repositories/releases/</url>
-        </repository>
-
-        <snapshotRepository>
-            <uniqueVersion>true</uniqueVersion>
-            <id>codiceSnapshots</id>
-            <name>Codice Snapshot Repository</name>
-            <url>https://tools.codice.org/artifacts/content/repositories/snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
-
-    <repositories>
-        
-        
+  <repositories>
+    <repository>
+      <id>codice.releases</id>
+      <url>http://artifacts.codice.org/content/repositories/releases</url>
+    </repository>
+    <repository>
+      <id>codice.snapshots</id>
+      <url>http://artifacts.codice.org/content/repositories/snapshots</url>
+    </repository>
         <repository>
             <id>opengeo.org</id>
             <name>opengeo</name>
@@ -68,16 +59,23 @@
     </repository>
         
     </repositories>
-    
 
+    <distributionManagement>
+        <repository>
+            <id>codiceReleases</id>
+            <name>Codice Release Repository</name>
+            <url>https://tools.codice.org/artifacts/content/repositories/releases/</url>
+        </repository>
+
+        <snapshotRepository>
+            <uniqueVersion>true</uniqueVersion>
+            <id>codiceSnapshots</id>
+            <name>Codice Snapshot Repository</name>
+            <url>https://tools.codice.org/artifacts/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+        
     <dependencies>
-        <dependency>
-            <groupId>ddf</groupId>
-            <artifactId>ddf</artifactId>
-            <type>pom</type>
-            <version>${ddf.version}</version>
-        </dependency>
-
 
         <dependency>
             <groupId>ddf.catalog.core</groupId>
